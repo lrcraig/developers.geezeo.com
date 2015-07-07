@@ -53,7 +53,7 @@
 
 <p>The Geezeo REST API provides a method of read and partial write access to a users PFM data. This API is for Partner use only, and is not designed or intended for use by the end user. In addition, security is limited to a Partner-wide access token at this time, so care should be taken that the token is not exposed to an end user.</p>
 
-<h1 id="accounts">Accounts</h1>
+          <h1 id="accounts">Accounts</h1>
 
 <h2 id="account-types">Account Types</h2>
 
@@ -344,63 +344,475 @@
 </tr>
 </tbody></table>
 
-          <h1 id="errors">Errors</h1>
+          <h1 id="ads">Ads</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
+<h2 id="get-ads">Get Ads</h2>
+<pre class="highlight shell"><code>curl -X <span class="s2">"GET"</span> <span class="s2">"http://geezeo.dev:3000/api/v2/users/:user_id:/ads"</span> -u <span class="s2">"%geezeo-api-key%:"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="s1">'https://geezeobkdemo.mybankhq.com/api/v2/users/:user_id:/ads'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s1">':geezeo-aip-key:'</span>
 
-<p>The Kittn API uses the following error codes:</p>
+<span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">,</span>
+  <span class="ss">:use_ssl</span> <span class="o">=&gt;</span> <span class="n">uri</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s1">'https'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+
+  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="p">.</span><span class="nf">new</span> <span class="n">uri</span><span class="p">.</span><span class="nf">request_uri</span>
+  <span class="n">request</span><span class="p">.</span><span class="nf">basic_auth</span> <span class="n">key</span><span class="p">,</span><span class="s1">''</span>
+
+  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span> <span class="n">request</span>
+
+  <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span>
+<span class="k">end</span>
+
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"campaign_impressions"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">270</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ad_target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.example.com/api/v2/users/42/campaign_impressions/270/click"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"marketing_campaign"</span><span class="p">:</span><span class="w"> </span><span class="mi">338</span><span class="p">}</span><span class="w">
+  </span><span class="p">}],</span><span class="w">
+  </span><span class="nt">"marketing_campaigns"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">338</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"campaign_location"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"marketing_campaign_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.example.com/lorem.jpg"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"title"</span><span class="p">,</span><span class="w">
+  </span><span class="err">}</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Return ads that are relevant to a user. This registers an impression for each returned ad, so API clients are expected to display all ads returned.</p>
+
+<p><code class="prettyprint">GET /api/v2/users/:user_id:/ads</code>
+<code class="prettyprint">GET /api/v2/users/:user_id:/ads?parameters</code></p>
+
+<h3 id="parameters">Parameters</h3>
 
 <table><thead>
 <tr>
-<th>Error Code</th>
-<th>Meaning</th>
+<th>Parameter</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>campaign_location</td>
+<td>Limit results to this campaign location.</td>
 </tr>
 <tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
+<td>count</td>
+<td>Retrieve at most this many campaign impressions. Defaults to 1.</td>
 </tr>
 <tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>ad_dimensions</td>
+<td>Retrieve only ads with the requested ad_dimensions.</td>
 </tr>
 </tbody></table>
+
+<aside class="warning">campaign_location and ad_dimensions are all optional, but only certain combinations are meaningful</aside>
+
+<table><thead>
+<tr>
+<th>Description</th>
+<th>ad_dimensions</th>
+<th>campaign_location</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Alert Ad</td>
+<td>650_100</td>
+<td>Alert</td>
+</tr>
+<tr>
+<td>Budget Ad</td>
+<td>650_100</td>
+<td>Budget</td>
+</tr>
+<tr>
+<td>Cashflow Ad</td>
+<td>650_100</td>
+<td>Cashflow</td>
+</tr>
+<tr>
+<td>Goal Ad</td>
+<td>650_100</td>
+<td>SavingsGoal</td>
+</tr>
+<tr>
+<td>Large Banner Ad</td>
+<td>650_100</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Left Sidebar Ad</td>
+<td>225_225</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Mobile Ad</td>
+<td>320_80</td>
+<td>Mobile</td>
+</tr>
+<tr>
+<td>Net Worth Ad</td>
+<td>650_100</td>
+<td>Networth</td>
+</tr>
+<tr>
+<td>Right Sidebar Ad</td>
+<td>200_200</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Small Right Sidebar Ad</td>
+<td>95 _95</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Transaction Feed Ad</td>
+<td>425_100</td>
+<td>n/a</td>
+</tr>
+</tbody></table>
+
+<h3 id="status-codes">Status Codes</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200 OK</td>
+<td>returned when successful</td>
+</tr>
+<tr>
+<td>401 Not Authorized</td>
+<td>returned when invalid credentials are provided</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>returned when an invalid user is specified</td>
+</tr>
+</tbody></table>
+
+          <h1 id="budgets">Budgets</h1>
+
+<h2 id="get-budgets">Get Budgets</h2>
+<pre class="highlight shell"><code>curl -X <span class="s2">"GET"</span> <span class="s2">"http://geezeo.dev:3000/api/v2/users/:user_id:/budgets"</span> -u <span class="s2">"%geezeo-api-key%:"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="s1">'https://geezeobkdemo.mybankhq.com/api/v2/users/:user_id:/budgets'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s1">':geezeo-aip-key:'</span>
+
+<span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">,</span>
+  <span class="ss">:use_ssl</span> <span class="o">=&gt;</span> <span class="n">uri</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s1">'https'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+
+  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="p">.</span><span class="nf">new</span> <span class="n">uri</span><span class="p">.</span><span class="nf">request_uri</span>
+  <span class="n">request</span><span class="p">.</span><span class="nf">basic_auth</span> <span class="n">key</span><span class="p">,</span><span class="s1">''</span>
+
+  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span> <span class="n">request</span>
+
+  <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span>
+<span class="k">end</span>
+
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"under"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"total_budget"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"total_spent"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"total_remaining"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"total_percentage"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"budgets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">284</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Food"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"month"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2013</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"tag_names"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"Diningout"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"spent"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"under"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"budget_amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">396</span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">396</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eChecking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300.54"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"reference_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"789274930"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"aggregation_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"partner"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"harvest_updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-05T12:00:00Z"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"account_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_expenses"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_budget"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_cashflow"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_dashboard"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_goals"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_networth"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"fi"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CashEdge Test Bank (Agg) - Retail Non 2FA"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"cashedge_account_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Savings"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"acct_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"ext_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cash"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Return a list of budgets for the given user.</p>
+
+<p>The state attribute will be one of over, risk, or under. A value of risk means that the current spending on the budget is over the spending limit, prorated for the current month.</p>
+
+<p>&lsquo;GET /api/v2/users/:user_id:/budgets&rsquo;</p>
+
+<h3 id="status-codes">Status Codes</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200 OK</td>
+<td>returned when successful</td>
+</tr>
+<tr>
+<td>401 Not Authorized</td>
+<td>returned when invalid credentials are provided</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>returned when an invalid user is specified</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-budget">Get Budget</h2>
+
+<p>Return a budget for the given user.</p>
+<pre class="highlight shell"><code>curl -X <span class="s2">"GET"</span> <span class="s2">"http://geezeo.dev:3000/api/v2/users/:user_id:/budgets/:budget_id:"</span> -u <span class="s2">"%geezeo-api-key%:"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="s1">'https://geezeobkdemo.mybankhq.com/api/v2/users/:user_id:/budgets/:budget_id:'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s1">':geezeo-aip-key:'</span>
+
+<span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">,</span>
+  <span class="ss">:use_ssl</span> <span class="o">=&gt;</span> <span class="n">uri</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s1">'https'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+
+  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="p">.</span><span class="nf">new</span> <span class="n">uri</span><span class="p">.</span><span class="nf">request_uri</span>
+  <span class="n">request</span><span class="p">.</span><span class="nf">basic_auth</span> <span class="n">key</span><span class="p">,</span><span class="s1">''</span>
+
+  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span> <span class="n">request</span>
+
+  <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span>
+<span class="k">end</span>
+
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"budgets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"id"</span><span class="err">:</span><span class="w"> </span><span class="mi">1234</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="err">:</span><span class="w"> </span><span class="s2">"Food"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"month"</span><span class="err">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"year"</span><span class="err">:</span><span class="w"> </span><span class="mi">2013</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tag_names"</span><span class="err">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"Diningout"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"spent"</span><span class="err">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="err">:</span><span class="w"> </span><span class="s2">"under"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"budget_amount"</span><span class="err">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"links"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">396</span><span class="p">],</span><span class="w">
+      </span><span class="nt">"budget_histories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2468</span><span class="p">,</span><span class="w"> </span><span class="mi">2469</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">396</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eChecking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300.54"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"reference_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"789274930"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"aggregation_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"partner"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"harvest_updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-05T12:00:00Z"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"account_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_expenses"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_budget"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_cashflow"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_dashboard"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_goals"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_networth"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"fi"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CashEdge Test Bank (Agg) - Retail Non 2FA"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"cashedge_account_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Savings"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"acct_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"ext_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cash"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"budget_histories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2468</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"budget_amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"month"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"spent"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"under"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2013</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2469</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"budget_amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"month"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"spent"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"under"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2013</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>For budget histories, the state attribute will be either over or under. For budgets, the state attribute will be one of over, risk, or under. A value of risk means that the current spending on the budget is over the spending limit, prorated for the current month.</p>
+
+<p>&#39;GET /api/v2/users/:user_id:/budgets/:budget_id:&rsquo;</p>
+
+<h2 id="status-codes">Status Codes</h2>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200 OK</td>
+<td>returned when successful</td>
+</tr>
+<tr>
+<td>401 Not Authorized</td>
+<td>returned when invalid credentials are provided</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>returned when an invalid user is specified</td>
+</tr>
+</tbody></table>
+
+<p>Create Budget
+Create a budget for the given user.</p>
+
+<p>Request
+POST /api/v2/users/:user_id:/budgets
+{
+  &ldquo;budget&rdquo;: {
+    &ldquo;name&rdquo;: &ldquo;Bike parts&rdquo;,
+    &ldquo;budget_amount&rdquo;: 200,
+    &ldquo;show_on_dashboard&rdquo;: true,
+    &ldquo;tag_names&rdquo;: [
+      &ldquo;Bikes&rdquo;
+    ]
+  }
+}
+Parameters
+Parameter   Description
+name    The name of the new budget. Required
+budget_amount   The amount of the new budget. Required
+tag_names   A list of tags to track. Required
+account_list    A list of Geezeo account ids to track.
+show_on_dashboard   Display this budget on the dashboard.
+other   Only track unbudgeted expenses.
+Response
+{
+  &ldquo;budgets&rdquo;: [
+    &ldquo;id&rdquo;: 1234,
+    &ldquo;name&rdquo;: &ldquo;Food&rdquo;,
+    &ldquo;month&rdquo;: 9,
+    &ldquo;year&rdquo;: 2013,
+    &ldquo;tag_names&rdquo;: [
+      &ldquo;Diningout&rdquo;
+    ],
+    &ldquo;spent&rdquo;: 0,
+    &ldquo;state&rdquo;: &ldquo;under&rdquo;,
+    &ldquo;budget_amount&rdquo;: 300,
+    &ldquo;links&rdquo;: {
+      &ldquo;budget_histories&rdquo;: [2468, 2469]
+    }
+  ],
+  &ldquo;budget_histories&rdquo;: [
+    {
+      &ldquo;id&rdquo;: 2468,
+      &ldquo;budget_amount&rdquo;: 300,
+      &ldquo;month&rdquo;: 8,
+      &ldquo;spent&rdquo;: 0,
+      &ldquo;state&rdquo;: &ldquo;under&rdquo;,
+      &ldquo;year&rdquo;: 2013
+    },
+    {
+      &ldquo;id&rdquo;: 2469,
+      &ldquo;budget_amount&rdquo;: 300,
+      &ldquo;month&rdquo;: 7,
+      &ldquo;spent&rdquo;: 0,
+      &ldquo;state&rdquo;: &ldquo;under&rdquo;,
+      &ldquo;year&rdquo;: 2013
+    }
+  ]
+}
+For budget histories, the state attribute will be either over or under. For budgets, the state attribute will be one of over, risk, or under. A value of risk means that the current spending on the budget is over the spending limit, prorated for the current month.</p>
+
+<p>Status Codes
+Status  Description
+201 Created returned when successful
+401 Not Authorized  returned when invalid credentials are provided
+404 Not Found   returned when an invalid user is specified
+422 Unprocessable Entity    returned when the parameters given were invalid
+Update Budget
+Update a budget for the given user.</p>
+
+<p>Request
+PUT /api/v2/users/:user_id:/budgets/:budget_id:
+Parameters
+See Create Budget parameters</p>
+
+<p>Status Codes
+Status  Description
+204 No Content  returned when successful
+401 Not Authorized  returned when invalid credentials are provided
+404 Not Found   returned when an invalid user is specified
+422 Unprocessable Entity    returned when the parameters given were invalid
+Delete Budget
+Delete a budget for the given user.</p>
+
+<p>Request
+DELETE /api/v2/users/:user_id:/budgets/:budget_id:
+Status Codes
+Status  Description
+204 No Content  returned when successful
+401 Not Authorized  returned when invalid credentials are provided
+404 Not Found   returned when an invalid user is specified</p>
 
       </div>
       <div class="dark-box">
