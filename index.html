@@ -1,0 +1,414 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Reference</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["shell","ruby"]);
+        });
+      </script>
+  </head>
+
+  <body class="index">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <div class='logo-background'>
+      <a href="#">
+        <img src="images/big-g.png" />
+        </a>
+      </div>
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+              <a href="#" data-language-name="ruby">ruby</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='//geezeo.com'>Powered by:<img class="logo" src="/images/logo.png"></a></li>
+            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="overview">Overview</h1>
+
+<p>The Geezeo REST API provides a method of read and partial write access to a users PFM data. This API is for Partner use only, and is not designed or intended for use by the end user. In addition, security is limited to a Partner-wide access token at this time, so care should be taken that the token is not exposed to an end user.</p>
+
+<h1 id="accounts">Accounts</h1>
+
+<h2 id="account-types">Account Types</h2>
+
+<table><thead>
+<tr>
+<th>Group</th>
+<th>Account Types</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Cash</td>
+<td>checking, savings, money market</td>
+</tr>
+<tr>
+<td>Debt</td>
+<td>autos creditline home loan student_loans</td>
+</tr>
+<tr>
+<td>Investment</td>
+<td>investment</td>
+</tr>
+<tr>
+<td>Asset</td>
+<td>asset cd</td>
+</tr>
+<tr>
+<td>Credit card</td>
+<td>cards</td>
+</tr>
+<tr>
+<td>Bill</td>
+<td>bill</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-accounts">Get Accounts</h2>
+<pre class="highlight shell"><code>curl -X <span class="s2">"GET"</span> <span class="s2">"http://geezeo.dev:3000/api/v2/users/:user_id:/accounts"</span> -u <span class="s2">"%geezeo-api-key%:"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="s1">'https://geezeobkdemo.mybankhq.com/api/v2/users/:user_id:'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s1">':geezeo-aip-key:'</span>
+
+<span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">,</span>
+  <span class="ss">:use_ssl</span> <span class="o">=&gt;</span> <span class="n">uri</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s1">'https'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+
+  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="p">.</span><span class="nf">new</span> <span class="n">uri</span><span class="p">.</span><span class="nf">request_uri</span>
+  <span class="n">request</span><span class="p">.</span><span class="nf">basic_auth</span> <span class="n">key</span><span class="p">,</span><span class="s1">''</span>
+
+  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span> <span class="n">request</span>
+
+  <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span>
+<span class="k">end</span>
+
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eChecking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300.54"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"reference_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"789274930"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"aggregation_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cashedge"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"harvest_updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-05T12:00:00Z"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"account_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_expenses"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_budget"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_cashflow"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_dashboard"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_goals"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_networth"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"fi"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CashEdge Test Bank (Agg) - Retail Non 2FA"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"There was an error."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"actionable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"cashedge_account_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Savings"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"acct_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"ext_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cash"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Return a list of accounts for the given user (this will exclude non-classified CashEdge accounts).</p>
+
+<p><code class="prettyprint">GET /api/v2/users/:user_id:/accounts</code></p>
+
+<h3 id="status-codes">Status Codes</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200 OK</td>
+<td>returned when successful</td>
+</tr>
+<tr>
+<td>401 Not Authorized</td>
+<td>returned when invalid credentials are provided</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>returned when an invalid user is specified</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-all-accounts">Get All Accounts</h2>
+<pre class="highlight shell"><code>curl -X <span class="s2">"GET"</span> <span class="s2">"http://geezeo.dev:3000/api/v2/users/:user_id:/accounts/all"</span> -u <span class="s2">"%geezeo-api-key%:"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="s1">'https://geezeobkdemo.mybankhq.com/api/v2/users/:user_id:/accounts/all'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s1">':geezeo-aip-key:'</span>
+
+<span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">,</span>
+  <span class="ss">:use_ssl</span> <span class="o">=&gt;</span> <span class="n">uri</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s1">'https'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+
+  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="p">.</span><span class="nf">new</span> <span class="n">uri</span><span class="p">.</span><span class="nf">request_uri</span>
+  <span class="n">request</span><span class="p">.</span><span class="nf">basic_auth</span> <span class="n">key</span><span class="p">,</span><span class="s1">''</span>
+
+  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span> <span class="n">request</span>
+
+  <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span>
+<span class="k">end</span>
+
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eChecking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300.54"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"reference_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"789274930"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"aggregation_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cashedge"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"harvest_updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-05T12:00:00Z"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"account_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_expenses"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_budget"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_cashflow"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_dashboard"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_goals"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_networth"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"fi"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CashEdge Test Bank (Agg) - Retail Non 2FA"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"There was an error."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"actionable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"cashedge_account_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Savings"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"acct_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"ext_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cash"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Return a list of accounts for the given user (this will exclude non-classified CashEdge accounts).</p>
+
+<p><code class="prettyprint">GET /api/v2/users/:user_id:/accounts/all</code></p>
+
+<h3 id="status-codes">Status Codes</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200 OK</td>
+<td>returned when successful</td>
+</tr>
+<tr>
+<td>401 Not Authorized</td>
+<td>returned when invalid credentials are provided</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>returned when an invalid user is specified</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-potential-cashflow-accounts">Get Potential Cashflow Accounts</h2>
+<pre class="highlight shell"><code>curl -X <span class="s2">"GET"</span> <span class="s2">"http://geezeo.dev:3000/api/v2/users/:user_id:/accounts/potential_cashflow"</span> -u <span class="s2">"%geezeo-api-key%:"</span>
+</code></pre>
+<pre class="highlight ruby"><code><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">(</span><span class="s1">'https://geezeobkdemo.mybankhq.com/api/v2/users/:user_id:/accounts/potential_cashflow'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s1">':geezeo-aip-key:'</span>
+
+<span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">,</span>
+  <span class="ss">:use_ssl</span> <span class="o">=&gt;</span> <span class="n">uri</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s1">'https'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+
+  <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="p">.</span><span class="nf">new</span> <span class="n">uri</span><span class="p">.</span><span class="nf">request_uri</span>
+  <span class="n">request</span><span class="p">.</span><span class="nf">basic_auth</span> <span class="n">key</span><span class="p">,</span><span class="s1">''</span>
+
+  <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="nf">request</span> <span class="n">request</span>
+
+  <span class="nb">puts</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span>
+<span class="k">end</span>
+
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eChecking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300.54"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"reference_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"789274930"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"aggregation_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cashedge"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"harvest_updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-03-05T12:00:00Z"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"account_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checking"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_expenses"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_budget"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_cashflow"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_dashboard"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_goals"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"include_in_networth"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"fi"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CashEdge Test Bank (Agg) - Retail Non 2FA"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"There was an error."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"actionable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"cashedge_account_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Savings"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"acct_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"ext_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SDA"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cash"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Return a list of accounts for the given user (this will exclude non-classified CashEdge accounts).</p>
+
+<p><code class="prettyprint">GET /api/v2/users/:user_id:/accounts</code></p>
+
+<h3 id="status-codes">Status Codes</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200 OK</td>
+<td>returned when successful</td>
+</tr>
+<tr>
+<td>401 Not Authorized</td>
+<td>returned when invalid credentials are provided</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>returned when an invalid user is specified</td>
+</tr>
+</tbody></table>
+
+          <h1 id="errors">Errors</h1>
+
+<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
+
+<p>The Kittn API uses the following error codes:</p>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad Request &ndash; Your request sucks</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized &ndash; Your API key is wrong</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found &ndash; The specified kitten could not be found</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone &ndash; The kitten requested has been removed from our servers</td>
+</tr>
+<tr>
+<td>418</td>
+<td>I&rsquo;m a teapot</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+                <a href="#" data-language-name="ruby">ruby</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
