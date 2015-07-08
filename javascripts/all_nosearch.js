@@ -17,7 +17,7 @@ function(t){"use strict";function e(e){if(e&&""!==e){$(".lang-selector a").remov
  * http://jqueryui.com
  * Includes: widget.js
  * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
-function(t){"function"==typeof define&&define.amd?define(["jquery"],t):t(jQuery)}(function(t){/*!
+function(t){"function"==typeof define&&define.amd?define(["_jquery.min"],t):t(jQuery)}(function(t){/*!
    * jQuery UI Widget 1.11.3
    * http://jqueryui.com
    *
