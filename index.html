@@ -8977,6 +8977,37 @@ one is already in progress.</p>
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+<pre class="highlight csharp"><code><span class="c1">//Typical Error object format returned from SDK
+</span><span class="p">{</span>
+      <span class="n">var</span> <span class="n">error</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GeezeoSdkException</span><span class="p">{</span> <span class="c1">//base class
+</span>                        <span class="n">GeezeoError</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GeezeoError</span><span class="p">{</span>
+                                <span class="n">Error</span> <span class="p">=</span> <span class="k">new</span> <span class="n">InternalError</span><span class="p">{</span>
+                                    <span class="n">Message</span> <span class="p">=</span> <span class="s">"Error in transaction"</span>
+                                    <span class="n">Data</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;{</span>
+                                        <span class="s">"Specific Error Message"</span>
+                                    <span class="p">}</span>
+                                <span class="p">},</span>
+                                <span class="n">Message</span> <span class="p">=</span> <span class="s">"Error in transaction"</span>
+                            <span class="p">},</span>
+                         <span class="n">ExceptionType</span> <span class="p">=</span> <span class="n">ExceptionType</span><span class="p">.</span><span class="n">InternalServer</span>   
+                        <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//Typical Error object format returned from SDK when error is unprocessable entity
+</span><span class="p">{</span>
+      <span class="n">var</span> <span class="n">error</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GeezeoSdkException</span><span class="p">{</span> <span class="c1">//base class
+</span>                        <span class="n">GeezeoError</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GeezeoError</span><span class="p">{</span>
+                                <span class="n">Error</span> <span class="p">=</span> <span class="k">new</span> <span class="n">InternalError</span><span class="p">{</span>
+                                    <span class="n">Message</span> <span class="p">=</span> <span class="s">"Error in transaction"</span>
+                                    <span class="n">Data</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">object</span><span class="p">&gt;{</span>
+                                        <span class="s">"Specific property"</span><span class="p">,</span> <span class="s">"error message"</span>
+                                    <span class="p">}</span>
+                                <span class="p">}</span>
+                            <span class="p">},</span>
+                         <span class="n">ExceptionType</span> <span class="p">=</span> <span class="n">ExceptionType</span><span class="p">.</span><span class="n">UnprocessableEntity</span>  
+                        <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
 
 <p>Transaction nicknames and tags can be changed. </p>
 
@@ -9513,6 +9544,423 @@ one is already in progress.</p>
 <tr>
 <td><code class="prettyprint">404 Not Found</code></td>
 <td>returned when an invalid user is specified</td>
+</tr>
+</tbody></table>
+
+          <h1 id="data-source-setup">Data Source Setup</h1>
+
+<p>The Geezeo platform provides a number of transaction enrichment and aggregation services. A key component of any partnership with Geezeo is setting up the data source where Geezeo will get partner accounts and transactions.</p>
+
+<p>The transaction enrichment and aggregation services work on both partner and aggregated accounts. Partners do not need to do additional setup for aggregated accounts.</p>
+
+<p>We have both an http api, as well as a file interface. The httpinterface is required, while the file interface can be used supplement http traffic for bulk processing.</p>
+
+<h2 id="customer-user-data-format">Customer User data format</h2>
+
+<blockquote>
+<p>Users XML sample for either Flat File or SAX endpoint</p>
+</blockquote>
+<pre class="highlight xml"><code>
+<span class="nt">&lt;Users&gt;</span>
+  <span class="nt">&lt;User&gt;</span>
+    <span class="nt">&lt;Action&gt;</span>New<span class="nt">&lt;/Action&gt;</span>
+    <span class="nt">&lt;PartnerCustomerId&gt;</span>123<span class="nt">&lt;/PartnerCustomerId&gt;</span>
+    <span class="nt">&lt;FirstName&gt;</span>FirstName<span class="nt">&lt;/FirstName&gt;</span>
+    <span class="nt">&lt;LastName&gt;</span>LastName<span class="nt">&lt;/LastName&gt;</span>
+    <span class="nt">&lt;Email&gt;</span>flastname@geezeo.com<span class="nt">&lt;/Email&gt;</span>
+    <span class="nt">&lt;ZipCode&gt;</span>06000<span class="nt">&lt;/ZipCode&gt;</span>
+  <span class="nt">&lt;/User&gt;</span>
+<span class="nt">&lt;/Users&gt;</span>
+
+</code></pre>
+
+<p>The Users call is used to create, update, or delete a user.</p>
+
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Type</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;Users&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains all &lt;User&gt; records in the set</td>
+</tr>
+<tr>
+<td>&lt;User&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains data defining a single customer</td>
+</tr>
+<tr>
+<td>&lt;Action&gt;</td>
+<td><a href="#ActionType">ActionType</a></td>
+<td>Required</td>
+<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the account is to be deleted</td>
+</tr>
+<tr>
+<td>&lt;PartnerCustomerId&gt;</td>
+<td>String (255)</td>
+<td>Required; Unique</td>
+<td>Unique alphanumeric ID; used to identify the customer and match accounts to it</td>
+</tr>
+<tr>
+<td>&lt;FirstName&gt;</td>
+<td>String (255)</td>
+<td>Required</td>
+<td>Customer’s first name</td>
+</tr>
+<tr>
+<td>&lt;LastName&gt;</td>
+<td>String (255)</td>
+<td>Required</td>
+<td>Customer’s last name</td>
+</tr>
+<tr>
+<td>&lt;Email&gt;</td>
+<td>String (255)</td>
+<td>Required</td>
+<td>Customer’s email address; should be a properly formatted email address</td>
+</tr>
+<tr>
+<td>&lt;ZipCode&gt;</td>
+<td>String (255)</td>
+<td>Required\</td>
+<td>Customer’s zip code; should be a valid US postal code</td>
+</tr>
+</tbody></table>
+
+<h2 id="customer-account-data-format">Customer Account data format</h2>
+
+<blockquote>
+<p>Accounts XML sample for either Flat File or SAX endpoint</p>
+</blockquote>
+<pre class="highlight xml"><code>
+<span class="nt">&lt;Accounts&gt;</span>
+  <span class="nt">&lt;Account&gt;</span>
+    <span class="nt">&lt;Action&gt;</span>NEW<span class="nt">&lt;/Action&gt;</span>
+    <span class="nt">&lt;PartnerCustomerId&gt;</span>12345<span class="nt">&lt;/PartnerCustomerId&gt;</span>
+    <span class="nt">&lt;AccountId&gt;</span>999<span class="nt">&lt;/AccountId&gt;</span>
+    <span class="nt">&lt;AccountFiName&gt;</span>JOHN Q PUBLIC<span class="nt">&lt;/AccountFiName&gt;</span>
+    <span class="nt">&lt;AccountNickname&gt;</span>John’s Savings<span class="nt">&lt;/AccountNickname&gt;</span>
+    <span class="nt">&lt;AccountType&gt;</span>Savings<span class="nt">&lt;/AccountType&gt;</span>
+    <span class="nt">&lt;AccountBalances&gt;</span>
+      <span class="nt">&lt;AccountBalance&gt;</span>
+        <span class="nt">&lt;BalanceType&gt;</span>Current<span class="nt">&lt;/BalanceType&gt;</span>
+        <span class="nt">&lt;BalanceAmount&gt;</span>1999.99<span class="nt">&lt;/BalanceAmount&gt;</span>
+        <span class="nt">&lt;CurrencyCode&gt;</span>USD<span class="nt">&lt;/CurrencyCode&gt;</span>
+      <span class="nt">&lt;/AccountBalance&gt;</span>
+    <span class="nt">&lt;/AccountBalances&gt;</span>
+  <span class="nt">&lt;/Account&gt;</span>
+<span class="nt">&lt;/Accounts&gt;</span>
+
+</code></pre>
+
+<p>The Users call is used to create, update, or delete a user.</p>
+
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Type</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;Accounts&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains all &lt;Account&gt; records in the set</td>
+</tr>
+<tr>
+<td>&lt;Account&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains data defining a single account</td>
+</tr>
+<tr>
+<td>&lt;Action&gt;</td>
+<td><a href="#ActionType">ActionType</a></td>
+<td>Optional</td>
+<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the account is to be deleted</td>
+</tr>
+<tr>
+<td>&lt;PartnerCustomerId&gt;</td>
+<td>String (255)</td>
+<td>Required</td>
+<td>Matches the account with the proper customer</td>
+</tr>
+<tr>
+<td>&lt;AccountId&gt;</td>
+<td>String (255)</td>
+<td>Required; Unique</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;AccountNumber&gt;</td>
+<td>String (255)</td>
+<td>Optional</td>
+<td>Further identifying information show to the user in certain circumstances to help identify the account to them. Full credit card numbers must not be supplied.</td>
+</tr>
+<tr>
+<td>&lt;AccountFiName&gt;</td>
+<td>String (255)</td>
+<td>Required</td>
+<td>Account name as provided by partner</td>
+</tr>
+<tr>
+<td>&lt;AccountNickname&gt;</td>
+<td>String (255)</td>
+<td>Optional</td>
+<td>Account nickname if set by partner</td>
+</tr>
+<tr>
+<td>&lt;AccountType&gt;</td>
+<td><a href="#AccountType">AccountType</a></td>
+<td>Required</td>
+<td>Account type from closed list</td>
+</tr>
+<tr>
+<td>&lt;AccountBalances&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains [&lt;AccountBalance&gt;(#AccountBalance) elements</td>
+</tr>
+<tr>
+<td>&lt;Properties&gt;</td>
+<td>Container</td>
+<td>Optional</td>
+<td>Contains <a href="#Properties">&lt;Property&gt;</a> elements</td>
+</tr>
+</tbody></table>
+
+<p><a name="AccountBalance"></a></p>
+
+<table><thead>
+<tr>
+<th>AccountBalance</th>
+<th>Type</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;BalanceType&gt;</td>
+<td><a href="#BalanceType">&lt;BalanceType&gt;</a></td>
+<td>Required</td>
+<td>The type of balance</td>
+</tr>
+<tr>
+<td>&lt;BalanceAmount&gt;</td>
+<td>Decimal</td>
+<td>Required</td>
+<td>The relative value of the balance type to two decimal places, e.g. 505.12 or -1110.56; a negative number should be preceded by a minus sign. Two decimal places are always required, even for .00 amounts.</td>
+</tr>
+<tr>
+<td>&lt;CurrencyCode&gt;</td>
+<td><a href="#CurrencyType">&lt;CurrencyType&gt;</a></td>
+<td>Required</td>
+<td>The currency code (currently only USD or CAD)</td>
+</tr>
+</tbody></table>
+
+<p><a name="BalanceType"></a></p>
+
+<h3 id="balancetype-deposit-accounts">BalanceType (Deposit Accounts)</h3>
+
+<table><thead>
+<tr>
+<th>Value Name</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Current</td>
+<td>Required</td>
+<td>The amount currently in the account without any holds</td>
+</tr>
+<tr>
+<td>Available</td>
+<td>Optional</td>
+<td>The amount after any holds; the effective balance</td>
+</tr>
+</tbody></table>
+
+<h3 id="balancetype-credit-accounts">BalanceType (Credit Accounts)</h3>
+
+<table><thead>
+<tr>
+<th>Value Name</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>CurrentLimit</td>
+<td>Optional</td>
+<td>Current charge limit</td>
+</tr>
+<tr>
+<td>AvailableCredit</td>
+<td>Optional</td>
+<td>Amount left to spend after any charges</td>
+</tr>
+<tr>
+<td>Outstanding</td>
+<td>Required</td>
+<td>Amount currently charged to card</td>
+</tr>
+<tr>
+<td>CashAdvanceLimit</td>
+<td>Optional</td>
+<td>Limit on cash advances</td>
+</tr>
+<tr>
+<td>MinimumPaymentDue</td>
+<td>Optional</td>
+<td>Current minimum payment due</td>
+</tr>
+<tr>
+<td>PreviousAmountDue</td>
+<td>Optional</td>
+<td>Previous minimum payment due</td>
+</tr>
+<tr>
+<td>PastDueAmount</td>
+<td>Optional</td>
+<td>Past due amount</td>
+</tr>
+<tr>
+<td>FinanceCharges</td>
+<td>Optional</td>
+<td>Finance charges for current bill</td>
+</tr>
+</tbody></table>
+
+<h3 id="a-name-properties-properties-container"><a name="Properties"></a> Properties Container</h3>
+
+<p>The properties container is used to define non-balance based information and statistics. For example, in the future, items such as reward points, airline miles, and special promotion information would be provided through the properties container.</p>
+
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Type</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;Property&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains property information</td>
+</tr>
+<tr>
+<td>&lt;PropertyType&gt;</td>
+<td><a href="#PropertyType">&lt;PropertyType&gt;</a></td>
+<td>Required</td>
+<td>The type of property in the record</td>
+</tr>
+<tr>
+<td>&lt;PropertyValue&gt;</td>
+<td>String (255)</td>
+<td>Required</td>
+<td>The property’s value</td>
+</tr>
+</tbody></table>
+
+<h3 id="a-name-propertytype-property-types"><a name="PropertyType"></a> Property Types</h3>
+
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Type</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>PurchasesApr</td>
+<td>Decimal</td>
+<td>Optional</td>
+<td>APR for Purchase with one decimal of precision; e.g. 24.5% would be 25.5, not .255</td>
+</tr>
+<tr>
+<td>PaymentDueDate</td>
+<td>DateTime</td>
+<td>Optional</td>
+<td>Due date for current pay period</td>
+</tr>
+<tr>
+<td>InternalTransaction</td>
+<td>String (255)</td>
+<td>Optional</td>
+<td>Add type to internal transaction with these possible options: “bill pay”, “transfer”; added for clarity to user</td>
+</tr>
+</tbody></table>
+
+<h3 id="a-name-accounttype-account-types"><a name="AccountType"></a> Account Types</h3>
+
+<table><thead>
+<tr>
+<th>AccountType</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>checking</td>
+<td>Checking Account</td>
+</tr>
+<tr>
+<td>savings</td>
+<td>Savings Account</td>
+</tr>
+<tr>
+<td>cards</td>
+<td>Credit Card Account</td>
+</tr>
+<tr>
+<td>autos</td>
+<td>Auto Loan</td>
+</tr>
+<tr>
+<td>home</td>
+<td>Mortgage</td>
+</tr>
+<tr>
+<td>loan</td>
+<td>Other Loan type account not listed specifically</td>
+</tr>
+<tr>
+<td>asset</td>
+<td>Other Asset type account not listed specifically</td>
+</tr>
+<tr>
+<td>investment</td>
+<td>Investment Accounts (positions/transactions will not be created)</td>
+</tr>
+</tbody></table>
+
+<h3 id="a-name-actiontype-action-types"><a name="ActionType"></a> Action Types</h3>
+
+<table><thead>
+<tr>
+<th>ActionType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>New</td>
+</tr>
+<tr>
+<td>Update</td>
+</tr>
+<tr>
+<td>Delete</td>
 </tr>
 </tbody></table>
 
