@@ -9549,32 +9549,55 @@ one is already in progress.</p>
 
           <h1 id="data-source-setup">Data Source Setup</h1>
 
-<p>The Geezeo platform provides a number of transaction enrichment and aggregation services. A key component of any partnership with Geezeo is setting up the data source where Geezeo will get partner accounts and transactions.</p>
+<p>Geezeo provides robust transaction enrichment for partner and aggregated accounts. The first step in any implementation is connecting the platform to a data source for all partner accounts.</p>
 
-<p>The transaction enrichment and aggregation services work on both partner and aggregated accounts. Partners do not need to do additional setup for aggregated accounts.</p>
+<p>Geezeo provides a standard XML specification for harvesting transactions and accounts. Partners must provide an endpoint that meets the XML specifications below to provide data.</p>
 
-<p>We have both an http api, as well as a file interface. The httpinterface is required, while the file interface can be used supplement http traffic for bulk processing.</p>
+<p>The Geezeo platform will harvest users data based on a predefined schedule. </p>
+
+<p>Geezeo also provides a file transfer using the same XML spec. File transfers are often used in larger implementions for bulk data.  </p>
 
 <h2 id="customer-user-data-format">Customer User data format</h2>
 
 <blockquote>
-<p>Users XML sample for either Flat File or SAX endpoint</p>
+<p>Users Request XML</p>
 </blockquote>
-<pre class="highlight xml"><code>
-<span class="nt">&lt;Users&gt;</span>
-  <span class="nt">&lt;User&gt;</span>
-    <span class="nt">&lt;Action&gt;</span>New<span class="nt">&lt;/Action&gt;</span>
-    <span class="nt">&lt;PartnerCustomerId&gt;</span>123<span class="nt">&lt;/PartnerCustomerId&gt;</span>
-    <span class="nt">&lt;FirstName&gt;</span>FirstName<span class="nt">&lt;/FirstName&gt;</span>
-    <span class="nt">&lt;LastName&gt;</span>LastName<span class="nt">&lt;/LastName&gt;</span>
-    <span class="nt">&lt;Email&gt;</span>flastname@geezeo.com<span class="nt">&lt;/Email&gt;</span>
-    <span class="nt">&lt;ZipCode&gt;</span>06000<span class="nt">&lt;/ZipCode&gt;</span>
-  <span class="nt">&lt;/User&gt;</span>
-<span class="nt">&lt;/Users&gt;</span>
-
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">id=</span><span class="s">”2”</span> 
+    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;UserList&gt;</span>
+    <span class="nt">&lt;Users&gt;</span>
+      <span class="nt">&lt;User&gt;</span>
+        <span class="nt">&lt;PartnerCustomerId&gt;</span>1234<span class="nt">&lt;/PartnerCustomerId&gt;</span>
+      <span class="nt">&lt;/User&gt;</span>
+    <span class="nt">&lt;/Users&gt;</span>
+  <span class="nt">&lt;/UserList&gt;</span>
+<span class="nt">&lt;/PartnerRequest&gt;</span>
 </code></pre>
 
-<p>The Users call is used to create, update, or delete a user.</p>
+<blockquote>
+<p>Users Response XML</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;Users&gt;</span>
+    <span class="nt">&lt;User&gt;</span>
+      <span class="nt">&lt;Action&gt;</span>New<span class="nt">&lt;/Action&gt;</span>
+      <span class="nt">&lt;PartnerCustomerId&gt;</span>123<span class="nt">&lt;/PartnerCustomerId&gt;</span>
+      <span class="nt">&lt;FirstName&gt;</span>FirstName<span class="nt">&lt;/FirstName&gt;</span>
+      <span class="nt">&lt;LastName&gt;</span>LastName<span class="nt">&lt;/LastName&gt;</span>
+      <span class="nt">&lt;Email&gt;</span>flastname@geezeo.com<span class="nt">&lt;/Email&gt;</span>
+      <span class="nt">&lt;ZipCode&gt;</span>06000<span class="nt">&lt;/ZipCode&gt;</span>
+    <span class="nt">&lt;/User&gt;</span>
+  <span class="nt">&lt;/Users&gt;</span>
+<span class="nt">&lt;/PartnerResponse&gt;</span>
+</code></pre>
+
+<p>Geezeo will request a list of users by sending User elements containing only their PartnerCustomerIds.</p>
+
+<p>Validating a <a href="#PartnerSignatureRequest">Partner Signature Request</a> and generating a <a href="#PartnerSignatureResponse">Partner Signature Response</a>.</p>
 
 <table><thead>
 <tr>
@@ -9598,7 +9621,7 @@ one is already in progress.</p>
 </tr>
 <tr>
 <td>&lt;Action&gt;</td>
-<td><a href="#ActionType">ActionType</a></td>
+<td><a href="#ActionType">Enum</a></td>
 <td>Required</td>
 <td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the account is to be deleted</td>
 </tr>
@@ -9637,30 +9660,51 @@ one is already in progress.</p>
 <h2 id="customer-account-data-format">Customer Account data format</h2>
 
 <blockquote>
-<p>Accounts XML sample for either Flat File or SAX endpoint</p>
+<p>Accounts Request XML</p>
 </blockquote>
-<pre class="highlight xml"><code>
-<span class="nt">&lt;Accounts&gt;</span>
-  <span class="nt">&lt;Account&gt;</span>
-    <span class="nt">&lt;Action&gt;</span>NEW<span class="nt">&lt;/Action&gt;</span>
-    <span class="nt">&lt;PartnerCustomerId&gt;</span>12345<span class="nt">&lt;/PartnerCustomerId&gt;</span>
-    <span class="nt">&lt;AccountId&gt;</span>999<span class="nt">&lt;/AccountId&gt;</span>
-    <span class="nt">&lt;AccountFiName&gt;</span>JOHN Q PUBLIC<span class="nt">&lt;/AccountFiName&gt;</span>
-    <span class="nt">&lt;AccountNickname&gt;</span>John’s Savings<span class="nt">&lt;/AccountNickname&gt;</span>
-    <span class="nt">&lt;AccountType&gt;</span>Savings<span class="nt">&lt;/AccountType&gt;</span>
-    <span class="nt">&lt;AccountBalances&gt;</span>
-      <span class="nt">&lt;AccountBalance&gt;</span>
-        <span class="nt">&lt;BalanceType&gt;</span>Current<span class="nt">&lt;/BalanceType&gt;</span>
-        <span class="nt">&lt;BalanceAmount&gt;</span>1999.99<span class="nt">&lt;/BalanceAmount&gt;</span>
-        <span class="nt">&lt;CurrencyCode&gt;</span>USD<span class="nt">&lt;/CurrencyCode&gt;</span>
-      <span class="nt">&lt;/AccountBalance&gt;</span>
-    <span class="nt">&lt;/AccountBalances&gt;</span>
-  <span class="nt">&lt;/Account&gt;</span>
-<span class="nt">&lt;/Accounts&gt;</span>
-
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">id=</span><span class="s">”2”</span> 
+    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;AccountList&gt;</span>
+      <span class="nt">&lt;Accounts&gt;</span>
+        <span class="nt">&lt;Account&gt;</span>
+          <span class="nt">&lt;PartnerCustomerId&gt;</span>4453<span class="nt">&lt;/PartnerCustomerId&gt;</span>
+        <span class="nt">&lt;/Account&gt;</span>
+      <span class="nt">&lt;/Accounts&gt;</span>
+    <span class="nt">&lt;/AccountList&gt;</span>
+<span class="nt">&lt;/PartnerRequest&gt;</span>
 </code></pre>
 
-<p>The Users call is used to create, update, or delete a user.</p>
+<blockquote>
+<p>Accounts Response XML</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;Accounts&gt;</span>
+    <span class="nt">&lt;Account&gt;</span>
+      <span class="nt">&lt;Action&gt;</span>NEW<span class="nt">&lt;/Action&gt;</span>
+      <span class="nt">&lt;PartnerCustomerId&gt;</span>12345<span class="nt">&lt;/PartnerCustomerId&gt;</span>
+      <span class="nt">&lt;AccountId&gt;</span>999<span class="nt">&lt;/AccountId&gt;</span>
+      <span class="nt">&lt;AccountFiName&gt;</span>JOHN Q PUBLIC<span class="nt">&lt;/AccountFiName&gt;</span>
+      <span class="nt">&lt;AccountNickname&gt;</span>John’s Savings<span class="nt">&lt;/AccountNickname&gt;</span>
+      <span class="nt">&lt;AccountType&gt;</span>Savings<span class="nt">&lt;/AccountType&gt;</span>
+      <span class="nt">&lt;AccountBalances&gt;</span>
+        <span class="nt">&lt;AccountBalance&gt;</span>
+          <span class="nt">&lt;BalanceType&gt;</span>Current<span class="nt">&lt;/BalanceType&gt;</span>
+          <span class="nt">&lt;BalanceAmount&gt;</span>1999.99<span class="nt">&lt;/BalanceAmount&gt;</span>
+          <span class="nt">&lt;CurrencyCode&gt;</span>USD<span class="nt">&lt;/CurrencyCode&gt;</span>
+        <span class="nt">&lt;/AccountBalance&gt;</span>
+      <span class="nt">&lt;/AccountBalances&gt;</span>
+    <span class="nt">&lt;/Account&gt;</span>
+  <span class="nt">&lt;/Accounts&gt;</span>
+<span class="nt">&lt;/PartnerResponse&gt;</span>
+</code></pre>
+
+<p>Geezeo will request a list of accounts belonging to a user by sending an Account element containing only the user’s PartnerCustomerId. You may optionally respond with updated account information instead of all account information. We will create any accounts that do not exist in the Geezeo database, update any accounts that do exist, and mark as closed any accounts that are in the Geezeo database but not in the response.</p>
+
+<p>Validating a <a href="#PartnerSignatureRequest">Partner Signature Request</a> and generating a <a href="#PartnerSignatureResponse">Partner Signature Response</a>.</p>
 
 <table><thead>
 <tr>
@@ -9684,7 +9728,7 @@ one is already in progress.</p>
 </tr>
 <tr>
 <td>&lt;Action&gt;</td>
-<td><a href="#ActionType">ActionType</a></td>
+<td><a href="#ActionType">Enum</a></td>
 <td>Optional</td>
 <td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the account is to be deleted</td>
 </tr>
@@ -9720,7 +9764,7 @@ one is already in progress.</p>
 </tr>
 <tr>
 <td>&lt;AccountType&gt;</td>
-<td><a href="#AccountType">AccountType</a></td>
+<td><a href="#AccountType">Enum</a></td>
 <td>Required</td>
 <td>Account type from closed list</td>
 </tr>
@@ -9750,7 +9794,7 @@ one is already in progress.</p>
 </thead><tbody>
 <tr>
 <td>&lt;BalanceType&gt;</td>
-<td><a href="#BalanceType">&lt;BalanceType&gt;</a></td>
+<td><a href="#BalanceType">Enum</a></td>
 <td>Required</td>
 <td>The type of balance</td>
 </tr>
@@ -9762,7 +9806,7 @@ one is already in progress.</p>
 </tr>
 <tr>
 <td>&lt;CurrencyCode&gt;</td>
-<td><a href="#CurrencyType">&lt;CurrencyType&gt;</a></td>
+<td><a href="#CurrencyType">Enum</a></td>
 <td>Required</td>
 <td>The currency code (currently only USD or CAD)</td>
 </tr>
@@ -9862,7 +9906,7 @@ one is already in progress.</p>
 </tr>
 <tr>
 <td>&lt;PropertyType&gt;</td>
-<td><a href="#PropertyType">&lt;PropertyType&gt;</a></td>
+<td><a href="#PropertyType">Element</a></td>
 <td>Required</td>
 <td>The type of property in the record</td>
 </tr>
@@ -9901,6 +9945,109 @@ one is already in progress.</p>
 <td>String (255)</td>
 <td>Optional</td>
 <td>Add type to internal transaction with these possible options: “bill pay”, “transfer”; added for clarity to user</td>
+</tr>
+</tbody></table>
+
+<h2 id="customer-transaction-data-format">Customer Transaction data format</h2>
+
+<blockquote>
+<p>Transactions XML sample for either File or SAX endpoint</p>
+</blockquote>
+<pre class="highlight xml"><code>
+<span class="nt">&lt;Transactions&gt;</span>
+  <span class="nt">&lt;Transaction&gt;</span>
+    <span class="nt">&lt;TransactionId&gt;</span>12345<span class="nt">&lt;/TransactionId&gt;</span>
+    <span class="nt">&lt;AccountId&gt;</span>9999901<span class="nt">&lt;/AccountId&gt;</span>
+    <span class="nt">&lt;TransactionType&gt;</span>Debit<span class="nt">&lt;/TransactionType&gt;</span>
+    <span class="nt">&lt;PostedDate&gt;</span>2009-03-19T11:40:50-04:00<span class="nt">&lt;/PostedDate&gt;</span>
+    <span class="nt">&lt;OriginationDate&gt;</span>2009-03-19T15:31:36-04:00<span class="nt">&lt;/OriginationDate&gt;</span>
+    <span class="nt">&lt;Amount&gt;</span>112.03<span class="nt">&lt;/Amount&gt;</span>
+    <span class="nt">&lt;Pending&gt;</span>true<span class="nt">&lt;/Pending&gt;</span>
+    <span class="nt">&lt;Memo&gt;</span>DUNKINDONUTS*100094<span class="nt">&lt;/Memo&gt;</span>
+  <span class="nt">&lt;/Transaction&gt;</span>
+<span class="nt">&lt;/Transactions&gt;</span>
+
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Type</th>
+<th>Usage</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt;Transactions&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains all &lt;Transaction&gt; records in the file</td>
+</tr>
+<tr>
+<td>&lt;Transaction&gt;</td>
+<td>Container</td>
+<td>Required</td>
+<td>Contains data defining a single transaction</td>
+</tr>
+<tr>
+<td>&lt;Action&gt;</td>
+<td><a href="#ActionType">Enum</a></td>
+<td>Required</td>
+<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the transaction is to be deleted</td>
+</tr>
+<tr>
+<td>&lt;TransactionId&gt;</td>
+<td>String (255)</td>
+<td>Required; Unique</td>
+<td>Unique alphanumeric ID; used to identify the transaction. This must be unique within each account, and never change.</td>
+</tr>
+<tr>
+<td>&lt;AccountId&gt;</td>
+<td>String(255)</td>
+<td>Required</td>
+<td>Used to match the transaction with its account</td>
+</tr>
+<tr>
+<td>&lt;TransactionType&gt;</td>
+<td>Closed List</td>
+<td>Required</td>
+<td>“Debit” for a negative transaction, “Credit” for a positive transaction</td>
+</tr>
+<tr>
+<td>&lt;PostedDate&gt;</td>
+<td>DateTime</td>
+<td>Required</td>
+<td>The time that the transaction posted to the user’s account</td>
+</tr>
+<tr>
+<td>&lt;OriginationDate&gt;</td>
+<td>DateTime</td>
+<td>Optional</td>
+<td>The time the transaction actually occurred</td>
+</tr>
+<tr>
+<td>&lt;Amount&gt;</td>
+<td>Decimal</td>
+<td>Required</td>
+<td>The absolute value of the transaction; do not use a dash to indicate a negative number. Two decimal places are required, even if they amount is even (5.00).</td>
+</tr>
+<tr>
+<td>&lt;Pending&gt;</td>
+<td>Closed List</td>
+<td>Optional</td>
+<td>If this is a pending transaction, pass “true”; otherwise do not include this field</td>
+</tr>
+<tr>
+<td>&lt;Memo&gt;</td>
+<td>String (255)</td>
+<td>Required</td>
+<td>The transaction description. What is provided in this field should match what’s shown on the users statement, and/or in the FIs OLB</td>
+</tr>
+<tr>
+<td>&lt;CheckNumber&gt;</td>
+<td>String (255)</td>
+<td>Optional</td>
+<td>If the transaction is a check, a check number may be included in this field.</td>
 </tr>
 </tbody></table>
 
