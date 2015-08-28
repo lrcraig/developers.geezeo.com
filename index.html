@@ -9555,7 +9555,7 @@ one is already in progress.</p>
 
 <p>The Geezeo platform will harvest users data based on a predefined schedule. </p>
 
-<p>Geezeo also provides a file transfer using the same XML spec. File transfers are often used in larger implementions for bulk data.  </p>
+<p>Geezeo also provides a file transfer using the same XML spec. File transfers are often used in larger implementations for bulk data.  </p>
 
 <h2 id="customer-user-data-format">Customer User data format</h2>
 
@@ -9951,23 +9951,42 @@ one is already in progress.</p>
 <h2 id="customer-transaction-data-format">Customer Transaction data format</h2>
 
 <blockquote>
-<p>Transactions XML sample for either File or SAX endpoint</p>
+<p>Transactions Request XML</p>
 </blockquote>
-<pre class="highlight xml"><code>
-<span class="nt">&lt;Transactions&gt;</span>
-  <span class="nt">&lt;Transaction&gt;</span>
-    <span class="nt">&lt;TransactionId&gt;</span>12345<span class="nt">&lt;/TransactionId&gt;</span>
-    <span class="nt">&lt;AccountId&gt;</span>9999901<span class="nt">&lt;/AccountId&gt;</span>
-    <span class="nt">&lt;TransactionType&gt;</span>Debit<span class="nt">&lt;/TransactionType&gt;</span>
-    <span class="nt">&lt;PostedDate&gt;</span>2009-03-19T11:40:50-04:00<span class="nt">&lt;/PostedDate&gt;</span>
-    <span class="nt">&lt;OriginationDate&gt;</span>2009-03-19T15:31:36-04:00<span class="nt">&lt;/OriginationDate&gt;</span>
-    <span class="nt">&lt;Amount&gt;</span>112.03<span class="nt">&lt;/Amount&gt;</span>
-    <span class="nt">&lt;Pending&gt;</span>true<span class="nt">&lt;/Pending&gt;</span>
-    <span class="nt">&lt;Memo&gt;</span>DUNKINDONUTS*100094<span class="nt">&lt;/Memo&gt;</span>
-  <span class="nt">&lt;/Transaction&gt;</span>
-<span class="nt">&lt;/Transactions&gt;</span>
-
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">id=</span><span class="s">”2”</span> 
+    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;TransactionList&gt;</span>
+    <span class="nt">&lt;AccountId&gt;</span>12345<span class="nt">&lt;/AccountId&gt;</span>
+    <span class="nt">&lt;LastTransactionId&gt;</span>9876<span class="nt">&lt;/LastTransactionId&gt;</span>
+  <span class="nt">&lt;/TransactionList&gt;</span>
+<span class="nt">&lt;/PartnerRequest&gt;</span>
 </code></pre>
+
+<blockquote>
+<p>Trasactions Response XML</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;Transactions&gt;</span>
+    <span class="nt">&lt;Transaction&gt;</span>
+      <span class="nt">&lt;TransactionId&gt;</span>12345<span class="nt">&lt;/TransactionId&gt;</span>
+      <span class="nt">&lt;AccountId&gt;</span>9999901<span class="nt">&lt;/AccountId&gt;</span>
+      <span class="nt">&lt;TransactionType&gt;</span>Debit<span class="nt">&lt;/TransactionType&gt;</span>
+      <span class="nt">&lt;PostedDate&gt;</span>2009-03-19T11:40:50-04:00<span class="nt">&lt;/PostedDate&gt;</span>
+      <span class="nt">&lt;OriginationDate&gt;</span>2009-03-19T15:31:36-04:00<span class="nt">&lt;/OriginationDate&gt;</span>
+      <span class="nt">&lt;Amount&gt;</span>112.03<span class="nt">&lt;/Amount&gt;</span>
+      <span class="nt">&lt;Pending&gt;</span>true<span class="nt">&lt;/Pending&gt;</span>
+      <span class="nt">&lt;Memo&gt;</span>DUNKINDONUTS*100094<span class="nt">&lt;/Memo&gt;</span>
+    <span class="nt">&lt;/Transaction&gt;</span>
+  <span class="nt">&lt;/Transactions&gt;</span>
+
+<span class="nt">&lt;/PartnerResponse&gt;</span>
+</code></pre>
+
+<p>Geezeo will request a list of transactions belonging to a particular account by sending a TransactionList element containing an AccountId. We may provide you with the last TransactionId that we received. In that case, please respond with only transactions newer than that transaction. If we do not provide a TransactionId (for example when adding a new user), simply respond with all transactions.</p>
 
 <table><thead>
 <tr>
@@ -10050,6 +10069,202 @@ one is already in progress.</p>
 <td>If the transaction is a check, a check number may be included in this field.</td>
 </tr>
 </tbody></table>
+
+<h2 id="partner-request">Partner Request</h2>
+
+<blockquote>
+<p>Request Format</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">id=</span><span class="s">”2”</span> 
+    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- Payload --&gt;</span>
+<span class="nt">&lt;/PartnerRequest&gt;</span>
+</code></pre>
+
+<p>All requests will come within a Partner Request. </p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Element</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>signature</td>
+<td>String(128)</td>
+<td>PartnerRequest, PartnerResponse</td>
+<td>Contains authentication data</td>
+</tr>
+<tr>
+<td>id</td>
+<td>Integer</td>
+<td>PartnerRequest</td>
+<td>An integer to identify the request. These request IDs will be unique per day, but no tracking or verification is necessary.</td>
+</tr>
+<tr>
+<td>sso_partner_id</td>
+<td>String(128)</td>
+<td>PartnerRequest</td>
+<td>This value is identical to the partner_id value submitted in the SSO assertion. It can be used by Resellers that use a single end point for all related FIs as a differentiator, if the PartnerCustomerId values are not globally unique.</td>
+</tr>
+<tr>
+<td>request_id</td>
+<td>Integer</td>
+<td>PartnerResponse</td>
+<td>The value of this attribute must be the value of the “id” attribute from the corresponding PartnerRequest.</td>
+</tr>
+</tbody></table>
+
+<h2 id="validating-a-request-signature">Validating a Request Signature</h2>
+
+<h3 id="signature-verification">Signature Verification</h3>
+
+<ol>
+<li>Retrieve the signature from the complete XML request</li>
+<li>Extract the inner portion of the XML request body</li>
+<li>Generate a signature for this portion of the body, using the steps outlined above 4. Ensure the signature generated matches the signature provided by the request</li>
+</ol>
+
+<p>In order for the partner to authenticate Geezeo’s requests, and for Geezeo to authenticate the partner’s responses, the partner will be issued an API key. This key will never be included in any request or response, rather it will be used as a “shared secret” to generate a signature for each request and response.</p>
+
+<p>The API key may also be used to identify the partner that the request is targeted at if necessary; for instance, if multiple partners are served through the same partner API.</p>
+
+<p>Each request from Geezeo, as well as each response from the partner, will include a signature that is calculated the exact same way. The steps for signature generation and verification are outlined below.</p>
+
+<h2 id="partner-response">Partner Response</h2>
+
+<blockquote>
+<p>Request Format</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
+    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
+    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- Payload --&gt;</span>
+<span class="nt">&lt;/PartnerResponse&gt;</span>
+
+</code></pre>
+
+<p>All responses should be come in the form of a PartnerResponse. </p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Element</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>signature</td>
+<td>String(128)</td>
+<td>PartnerRequest, PartnerResponse</td>
+<td>Contains authentication data</td>
+</tr>
+<tr>
+<td>id</td>
+<td>Integer</td>
+<td>PartnerRequest</td>
+<td>An integer to identify the request. These request IDs will be unique per day, but no tracking or verification is necessary.</td>
+</tr>
+<tr>
+<td>sso_partner_id</td>
+<td>String(128)</td>
+<td>PartnerRequest</td>
+<td>This value is identical to the partner_id value submitted in the SSO assertion. It can be used by Resellers that use a single end point for all related FIs as a differentiator, if the PartnerCustomerId values are not globally unique.</td>
+</tr>
+<tr>
+<td>request_id</td>
+<td>Integer</td>
+<td>PartnerResponse</td>
+<td>The value of this attribute must be the value of the “id” attribute from the corresponding PartnerRequest.</td>
+</tr>
+</tbody></table>
+
+<h2 id="generating-a-response-signature">Generating a Response Signature</h2>
+
+<p>In order for the partner to authenticate Geezeo’s requests, and for Geezeo to authenticate the partner’s responses, the partner will be issued an API key. This key will never be included in any request or response, rather it will be used as a “shared secret” to generate a signature for each request and response.</p>
+
+<p>The API key may also be used to identify the partner that the request is targeted at if necessary; for instance, if multiple partners are served through the same partner API.</p>
+
+<p>Each request from Geezeo, as well as each response from the partner, will include a signature that is calculated the exact same way. The steps for signature generation and verification are outlined below.</p>
+
+<h3 id="signature-generation">Signature Generation</h3>
+
+<ol>
+<li>Generate the inner portion of the XML request body</li>
+<li>Remove any leading and trailing whitespace from each line, and then remove any newline
+characters.</li>
+<li>Generate a SHA512 hash of this body</li>
+<li>XOR this hash with the hexadecimal decoded version of the partner’s API key</li>
+<li>Convert the result to hexadecimal (low nibble first)
+Once a signature has been generated, place it in the “signature” attribute of the top level XML element, which will be PartnerRequest or PartnerResponse.</li>
+</ol>
+
+<h2 id="signature-example">Signature Example</h2>
+
+<blockquote>
+<p>Example Partner Request</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
+<span class="na">signature=</span><span class="s">”2385432dff1286f507acaec2485b14cdef92e669da759b2f30824eb</span>
+<span class="err">844a6d6ad11d36968ce62d99556dda62449495189b5d688cc8d2c820288b34d8a7</span>
+<span class="err">01af783”</span> <span class="na">id=</span><span class="s">”1”</span> <span class="na">sso_partner_id=</span><span class="s">”abc123”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;AccountList&gt;</span>
+    <span class="nt">&lt;Accounts&gt;</span>
+      <span class="nt">&lt;Account&gt;</span>
+        <span class="nt">&lt;PartnerCustomerId&gt;</span>2358475<span class="nt">&lt;/PartnerCustomerId&gt;</span>
+      <span class="nt">&lt;/Account&gt;</span>
+    <span class="nt">&lt;/Accounts&gt;</span>
+  <span class="nt">&lt;/AccountList&gt;</span>
+<span class="nt">&lt;/PartnerRequest&gt;</span>
+</code></pre>
+
+<blockquote>
+<p>Example payload - note : no spaces or line feeds</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;AccountList&gt;&lt;Accounts&gt;&lt;Account&gt;&lt;PartnerCustomerId&gt;</span>2358475<span class="nt">&lt;/PartnerCustomerId&gt;&lt;/Account&gt;&lt;/Accounts&gt;&lt;/AccountList&gt;</span>
+</code></pre>
+
+<blockquote>
+<p>Example api key
+<code class="prettyprint">
+2385432dff1286f507acaec2485b14cdef92e669da759b2f30824eb844a6d6ad11d36968ce62d99556dda62449495189b5d688cc8d2c820288b34d8a701af783
+</code></p>
+</blockquote>
+
+<p>Using the example to the right. The payload should be used for the signature. </p>
+
+<p>The payload is the actual request body inside the PartnerRequest.</p>
+
+<p>Using an example key.</p>
+
+<p>2385432dff1286f507acaec2485b14cdef92e669da759b2f30824eb844a6d6ad11d36968ce62d99556dda62449495189b5d688cc8d2c820288b34d8a701af783</p>
+
+<p>The SHA512 of that</p>
+
+<h2 id="reporting-errors">Reporting Errors</h2>
+
+<blockquote>
+<p>Error Response</p>
+</blockquote>
+<pre class="highlight xml"><code><span class="nt">&lt;Errors&gt;</span>
+  <span class="nt">&lt;Error&gt;</span>
+    <span class="nt">&lt;Code&gt;</span>500<span class="nt">&lt;/Code&gt;</span>
+    <span class="nt">&lt;Description&gt;</span>
+      Unable to find account 12345 for member 99999.
+    <span class="nt">&lt;/Description&gt;</span>
+<span class="nt">&lt;/Error&gt;</span>
+  ...
+<span class="nt">&lt;/Errors&gt;</span>
+</code></pre>
+
+<p>If an API request cannot be processed, please include any applicable errors by code and/or description in the body of the response.</p>
+
+<h2 id="general-reused-types">General reused types</h2>
 
 <h3 id="a-name-accounttype-account-types"><a name="AccountType"></a> Account Types</h3>
 
