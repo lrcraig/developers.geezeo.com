@@ -9511,7 +9511,7 @@ one is already in progress.</p>
 </tr>
 </tbody></table>
 
-          <h1 id="draft-push-data-source-setup-draft">DRAFT Push Data Source Setup DRAFT</h1>
+          <h1 id="draft-push-data-source-draft">DRAFT Push Data Source DRAFT</h1>
 
 <blockquote>
 <p>Sample request</p>
@@ -9524,8 +9524,8 @@ one is already in progress.</p>
       </span><span class="nt">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FirstName"</span><span class="p">,</span><span class="w">
       </span><span class="nt">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LastName"</span><span class="p">,</span><span class="w">
       </span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flastname@geezeo.com"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"06000"</span><span class="w">
-      </span><span class="s2">"accounts"</span><span class="err">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="nt">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"06000"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
           </span><span class="p">{</span><span class="w">
             </span><span class="nt">"reference_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"999"</span><span class="p">,</span><span class="w">
             </span><span class="nt">"account_fi_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JOHN Q PUBLIC"</span><span class="p">,</span><span class="w">
@@ -9551,8 +9551,8 @@ one is already in progress.</p>
               </span><span class="p">}</span><span class="w">
             </span><span class="p">]</span><span class="w">
           </span><span class="p">}</span><span class="w">
-        </span><span class="p">],</span><span class="w">
-    </span><span class="err">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -9561,22 +9561,29 @@ one is already in progress.</p>
 <p>Sample response</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="err">batch_id</span><span class="w"> </span><span class="err">:</span><span class="w"> </span><span class="nt">"abc123"</span><span class="w">
-</span><span class="err">}</span><span class="w">
+  </span><span class="nt">"batch_id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
 
 <blockquote>
 <p>Sample callback</p>
 </blockquote>
-<pre class="highlight json"><code><span class="w">  </span><span class="s2">"users"</span><span class="err">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"batch"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"batch_id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"abc123"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"success_count"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"error_count"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
-      </span><span class="s2">"partner_customer_id"</span><span class="err">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"partner_customer_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
       </span><span class="nt">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FirstName"</span><span class="p">,</span><span class="w">
       </span><span class="nt">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LastName"</span><span class="p">,</span><span class="w">
       </span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flastname@geezeo.com"</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"06000"</span><span class="w">
-      </span><span class="s2">"accounts"</span><span class="err">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="nt">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"06000"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"accounts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
           </span><span class="p">{</span><span class="w">
             </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
             </span><span class="nt">"reference_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"999"</span><span class="p">,</span><span class="w">
@@ -9611,17 +9618,17 @@ one is already in progress.</p>
               </span><span class="p">}</span><span class="w">
             </span><span class="p">]</span><span class="w">
           </span><span class="p">}</span><span class="w">
-        </span><span class="p">],</span><span class="w">
-    </span><span class="err">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
-</span><span class="err">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
 
 <p>Geezeo provides robust transaction enrichment for partner and aggregated accounts. The first step in any implementation is connecting the platform to a data source for all partner accounts.</p>
 
 <p>Geezeo provides a Push Data Source mechanism for integrations that require real-time data enrichment.</p>
 
-<p>Geezeo&rsquo;s Push Data Source allows partners to asynchronously submit users, accounts, and transactions via a batch json interface. Partners submit a serialized version of a user with it&rsquo;s associated accounts and transactions.</p>
+<p>Geezeo’s Push Data Source allows partners to asynchronously submit users, accounts, and transactions via a batch json interface. Partners submit a serialized version of a user with it’s associated accounts and transactions.</p>
 
 <p>Each request submitted to the Push Data Source should provide a callback url where the results will be returned to. Once the Geezeo platform has completed processing the batch, the platform will call back the URL with the results.</p>
 
@@ -9635,7 +9642,7 @@ one is already in progress.</p>
 
 <p>Requests should include a callback url. Once the Geezeo platform has completed processing the submitted batch, the platform will call the callback URL with the payload in the POST body.</p>
 
-<p>The request will come with a JWT token to ensure authenticity. </p>
+<p>The request will come with a JWT token to ensure authenticity.</p>
 
           <h1 id="data-source-setup">Data Source Setup</h1>
 
@@ -9653,9 +9660,9 @@ one is already in progress.</p>
 <p>Users Request XML</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">id=</span><span class="s">”2”</span> 
-    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">id=</span><span class="s">"2"</span> 
+    <span class="na">sso_partner_id=</span><span class="s">"abc122"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;UserList&gt;</span>
     <span class="nt">&lt;Users&gt;</span>
       <span class="nt">&lt;User&gt;</span>
@@ -9670,8 +9677,8 @@ one is already in progress.</p>
 <p>Users Response XML</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">request_id=</span><span class="s">"2"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;Users&gt;</span>
     <span class="nt">&lt;User&gt;</span>
       <span class="nt">&lt;Action&gt;</span>New<span class="nt">&lt;/Action&gt;</span>
@@ -9680,6 +9687,7 @@ one is already in progress.</p>
       <span class="nt">&lt;LastName&gt;</span>LastName<span class="nt">&lt;/LastName&gt;</span>
       <span class="nt">&lt;Email&gt;</span>flastname@geezeo.com<span class="nt">&lt;/Email&gt;</span>
       <span class="nt">&lt;ZipCode&gt;</span>06000<span class="nt">&lt;/ZipCode&gt;</span>
+      <span class="nt">&lt;UserExperience&gt;</span>pfm<span class="nt">&lt;/UserExperience&gt;</span>
     <span class="nt">&lt;/User&gt;</span>
   <span class="nt">&lt;/Users&gt;</span>
 <span class="nt">&lt;/PartnerResponse&gt;</span>
@@ -9713,7 +9721,7 @@ one is already in progress.</p>
 <td>&lt;Action&gt;</td>
 <td><a href="#ActionType">Enum</a></td>
 <td>Required</td>
-<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the account is to be deleted</td>
+<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete&quot; if the account is to be deleted</td>
 </tr>
 <tr>
 <td>&lt;PartnerCustomerId&gt;</td>
@@ -9725,25 +9733,31 @@ one is already in progress.</p>
 <td>&lt;FirstName&gt;</td>
 <td>String (255)</td>
 <td>Required</td>
-<td>Customer’s first name</td>
+<td>Customer&rsquo;s first name</td>
 </tr>
 <tr>
 <td>&lt;LastName&gt;</td>
 <td>String (255)</td>
 <td>Required</td>
-<td>Customer’s last name</td>
+<td>Customer&rsquo;s last name</td>
 </tr>
 <tr>
 <td>&lt;Email&gt;</td>
 <td>String (255)</td>
 <td>Required</td>
-<td>Customer’s email address; should be a properly formatted email address</td>
+<td>Customer&rsquo;s email address; should be a properly formatted email address</td>
 </tr>
 <tr>
 <td>&lt;ZipCode&gt;</td>
 <td>String (255)</td>
-<td>Required\</td>
-<td>Customer’s zip code; should be a valid US postal code</td>
+<td>Required</td>
+<td>Customer&rsquo;s zip code; should be a valid US postal code</td>
+</tr>
+<tr>
+<td>&lt;UserExperience&gt;</td>
+<td>String (255)</td>
+<td>Optional</td>
+<td>Customer user experience (PFM or TruBiz)</td>
 </tr>
 </tbody></table>
 
@@ -9753,9 +9767,9 @@ one is already in progress.</p>
 <p>Accounts Request XML</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">id=</span><span class="s">”2”</span> 
-    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">id=</span><span class="s">"2"</span> 
+    <span class="na">sso_partner_id=</span><span class="s">"abc122"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;AccountList&gt;</span>
       <span class="nt">&lt;Accounts&gt;</span>
         <span class="nt">&lt;Account&gt;</span>
@@ -9770,15 +9784,15 @@ one is already in progress.</p>
 <p>Accounts Response XML</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">request_id=</span><span class="s">"2"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;Accounts&gt;</span>
     <span class="nt">&lt;Account&gt;</span>
       <span class="nt">&lt;Action&gt;</span>NEW<span class="nt">&lt;/Action&gt;</span>
       <span class="nt">&lt;PartnerCustomerId&gt;</span>12345<span class="nt">&lt;/PartnerCustomerId&gt;</span>
       <span class="nt">&lt;AccountId&gt;</span>999<span class="nt">&lt;/AccountId&gt;</span>
       <span class="nt">&lt;AccountFiName&gt;</span>JOHN Q PUBLIC<span class="nt">&lt;/AccountFiName&gt;</span>
-      <span class="nt">&lt;AccountNickname&gt;</span>John’s Savings<span class="nt">&lt;/AccountNickname&gt;</span>
+      <span class="nt">&lt;AccountNickname&gt;</span>John's Savings<span class="nt">&lt;/AccountNickname&gt;</span>
       <span class="nt">&lt;AccountType&gt;</span>Savings<span class="nt">&lt;/AccountType&gt;</span>
       <span class="nt">&lt;AccountBalances&gt;</span>
         <span class="nt">&lt;AccountBalance&gt;</span>
@@ -9787,12 +9801,13 @@ one is already in progress.</p>
           <span class="nt">&lt;CurrencyCode&gt;</span>USD<span class="nt">&lt;/CurrencyCode&gt;</span>
         <span class="nt">&lt;/AccountBalance&gt;</span>
       <span class="nt">&lt;/AccountBalances&gt;</span>
+      <span class="nt">&lt;AccountExperience&gt;</span>pfm<span class="nt">&lt;/AccountExperience&gt;</span>
     <span class="nt">&lt;/Account&gt;</span>
   <span class="nt">&lt;/Accounts&gt;</span>
 <span class="nt">&lt;/PartnerResponse&gt;</span>
 </code></pre>
 
-<p>Geezeo will request a list of accounts belonging to a user by sending an Account element containing only the user’s PartnerCustomerId. You may optionally respond with updated account information instead of all account information. We will create any accounts that do not exist in the Geezeo database, update any accounts that do exist, and mark as closed any accounts that are in the Geezeo database but not in the response.</p>
+<p>Geezeo will request a list of accounts belonging to a user by sending an Account element containing only the user&rsquo;s PartnerCustomerId. You may optionally respond with updated account information instead of all account information. We will create any accounts that do not exist in the Geezeo database, update any accounts that do exist, and mark as closed any accounts that are in the Geezeo database but not in the response.</p>
 
 <p>Validating a <a href="#PartnerSignatureRequest">Partner Signature Request</a> and generating a <a href="#PartnerSignatureResponse">Partner Signature Response</a>.</p>
 
@@ -9820,7 +9835,7 @@ one is already in progress.</p>
 <td>&lt;Action&gt;</td>
 <td><a href="#ActionType">Enum</a></td>
 <td>Optional</td>
-<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the account is to be deleted</td>
+<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete&quot; if the account is to be deleted</td>
 </tr>
 <tr>
 <td>&lt;PartnerCustomerId&gt;</td>
@@ -9869,6 +9884,12 @@ one is already in progress.</p>
 <td>Container</td>
 <td>Optional</td>
 <td>Contains <a href="#Properties">&lt;Property&gt;</a> elements</td>
+</tr>
+<tr>
+<td>&lt;AccountExperience&gt;</td>
+<td>String (255)</td>
+<td>Optional</td>
+<td>Account experience (PFM or Trubiz)</td>
 </tr>
 </tbody></table>
 
@@ -10004,7 +10025,7 @@ one is already in progress.</p>
 <td>&lt;PropertyValue&gt;</td>
 <td>String (255)</td>
 <td>Required</td>
-<td>The property’s value</td>
+<td>The property&rsquo;s value</td>
 </tr>
 </tbody></table>
 
@@ -10034,7 +10055,7 @@ one is already in progress.</p>
 <td>InternalTransaction</td>
 <td>String (255)</td>
 <td>Optional</td>
-<td>Add type to internal transaction with these possible options: “bill pay”, “transfer”; added for clarity to user</td>
+<td>Add type to internal transaction with these possible options: “bill pay&quot;, “transfer&quot;; added for clarity to user</td>
 </tr>
 </tbody></table>
 
@@ -10044,9 +10065,9 @@ one is already in progress.</p>
 <p>Transactions Request XML</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">id=</span><span class="s">”2”</span> 
-    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">id=</span><span class="s">"2"</span> 
+    <span class="na">sso_partner_id=</span><span class="s">"abc122"</span><span class="nt">&gt;</span>
  <span class="nt">&lt;TransactionList&gt;</span>
     <span class="nt">&lt;AccountId&gt;</span>12345<span class="nt">&lt;/AccountId&gt;</span>
     <span class="nt">&lt;LastTransactionId&gt;</span>9876<span class="nt">&lt;/LastTransactionId&gt;</span>
@@ -10058,8 +10079,8 @@ one is already in progress.</p>
 <p>Trasactions Response XML</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">request_id=</span><span class="s">"2"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;Transactions&gt;</span>
     <span class="nt">&lt;Transaction&gt;</span>
       <span class="nt">&lt;TransactionId&gt;</span>12345<span class="nt">&lt;/TransactionId&gt;</span>
@@ -10102,7 +10123,7 @@ one is already in progress.</p>
 <td>&lt;Action&gt;</td>
 <td><a href="#ActionType">Enum</a></td>
 <td>Required</td>
-<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete” if the transaction is to be deleted</td>
+<td>If this element is left out, Geezeo will attempt to update the record, or add it if it does not exist; specify “Delete&quot; if the transaction is to be deleted</td>
 </tr>
 <tr>
 <td>&lt;TransactionId&gt;</td>
@@ -10120,13 +10141,13 @@ one is already in progress.</p>
 <td>&lt;TransactionType&gt;</td>
 <td>Closed List</td>
 <td>Required</td>
-<td>“Debit” for a negative transaction, “Credit” for a positive transaction</td>
+<td>“Debit&quot; for a negative transaction, “Credit&quot; for a positive transaction</td>
 </tr>
 <tr>
 <td>&lt;PostedDate&gt;</td>
 <td>DateTime</td>
 <td>Required</td>
-<td>The time that the transaction posted to the user’s account</td>
+<td>The time that the transaction posted to the user&rsquo;s account</td>
 </tr>
 <tr>
 <td>&lt;OriginationDate&gt;</td>
@@ -10144,13 +10165,13 @@ one is already in progress.</p>
 <td>&lt;Pending&gt;</td>
 <td>Closed List</td>
 <td>Optional</td>
-<td>If this is a pending transaction, pass “true”; otherwise do not include this field</td>
+<td>If this is a pending transaction, pass “true&quot;; otherwise do not include this field</td>
 </tr>
 <tr>
 <td>&lt;Memo&gt;</td>
 <td>String (255)</td>
 <td>Required</td>
-<td>The transaction description. What is provided in this field should match what’s shown on the users statement, and/or in the FIs OLB</td>
+<td>The transaction description. What is provided in this field should match what&rsquo;s shown on the users statement, and/or in the FIs OLB</td>
 </tr>
 <tr>
 <td>&lt;CheckNumber&gt;</td>
@@ -10166,9 +10187,9 @@ one is already in progress.</p>
 <p>Request Format</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">id=</span><span class="s">”2”</span> 
-    <span class="na">sso_partner_id=</span><span class="s">”abc122”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">id=</span><span class="s">"2"</span> 
+    <span class="na">sso_partner_id=</span><span class="s">"abc122"</span><span class="nt">&gt;</span>
     <span class="c">&lt;!-- Payload --&gt;</span>
 <span class="nt">&lt;/PartnerRequest&gt;</span>
 </code></pre>
@@ -10205,7 +10226,7 @@ one is already in progress.</p>
 <td>request_id</td>
 <td>Integer</td>
 <td>PartnerResponse</td>
-<td>The value of this attribute must be the value of the “id” attribute from the corresponding PartnerRequest.</td>
+<td>The value of this attribute must be the value of the “id&quot; attribute from the corresponding PartnerRequest.</td>
 </tr>
 </tbody></table>
 
@@ -10219,7 +10240,7 @@ one is already in progress.</p>
 <li>Generate a signature for this portion of the body, using the steps outlined above 4. Ensure the signature generated matches the signature provided by the request</li>
 </ol>
 
-<p>In order for the partner to authenticate Geezeo’s requests, and for Geezeo to authenticate the partner’s responses, the partner will be issued an API key. This key will never be included in any request or response, rather it will be used as a “shared secret” to generate a signature for each request and response.</p>
+<p>In order for the partner to authenticate Geezeo&rsquo;s requests, and for Geezeo to authenticate the partner&rsquo;s responses, the partner will be issued an API key. This key will never be included in any request or response, rather it will be used as a “shared secret&quot; to generate a signature for each request and response.</p>
 
 <p>The API key may also be used to identify the partner that the request is targeted at if necessary; for instance, if multiple partners are served through the same partner API.</p>
 
@@ -10231,8 +10252,8 @@ one is already in progress.</p>
 <p>Request Format</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerResponse</span>
-    <span class="na">signature=</span><span class="s">”PartnerSignature”</span> 
-    <span class="na">request_id=</span><span class="s">”2”</span><span class="nt">&gt;</span>
+    <span class="na">signature=</span><span class="s">"PartnerSignature"</span> 
+    <span class="na">request_id=</span><span class="s">"2"</span><span class="nt">&gt;</span>
     <span class="c">&lt;!-- Payload --&gt;</span>
 <span class="nt">&lt;/PartnerResponse&gt;</span>
 
@@ -10270,13 +10291,13 @@ one is already in progress.</p>
 <td>request_id</td>
 <td>Integer</td>
 <td>PartnerResponse</td>
-<td>The value of this attribute must be the value of the “id” attribute from the corresponding PartnerRequest.</td>
+<td>The value of this attribute must be the value of the “id&quot; attribute from the corresponding PartnerRequest.</td>
 </tr>
 </tbody></table>
 
 <h2 id="generating-a-response-signature">Generating a Response Signature</h2>
 
-<p>In order for the partner to authenticate Geezeo’s requests, and for Geezeo to authenticate the partner’s responses, the partner will be issued an API key. This key will never be included in any request or response, rather it will be used as a “shared secret” to generate a signature for each request and response.</p>
+<p>In order for the partner to authenticate Geezeo&rsquo;s requests, and for Geezeo to authenticate the partner&rsquo;s responses, the partner will be issued an API key. This key will never be included in any request or response, rather it will be used as a “shared secret&quot; to generate a signature for each request and response.</p>
 
 <p>The API key may also be used to identify the partner that the request is targeted at if necessary; for instance, if multiple partners are served through the same partner API.</p>
 
@@ -10289,9 +10310,9 @@ one is already in progress.</p>
 <li>Remove any leading and trailing whitespace from each line, and then remove any newline
 characters.</li>
 <li>Generate a SHA512 hash of this body</li>
-<li>XOR this hash with the hexadecimal decoded version of the partner’s API key</li>
+<li>XOR this hash with the hexadecimal decoded version of the partner&rsquo;s API key</li>
 <li>Convert the result to hexadecimal (low nibble first)
-Once a signature has been generated, place it in the “signature” attribute of the top level XML element, which will be PartnerRequest or PartnerResponse.</li>
+Once a signature has been generated, place it in the “signature&quot; attribute of the top level XML element, which will be PartnerRequest or PartnerResponse.</li>
 </ol>
 
 <h2 id="signature-example">Signature Example</h2>
@@ -10300,9 +10321,9 @@ Once a signature has been generated, place it in the “signature” attribute o
 <p>Example Partner Request</p>
 </blockquote>
 <pre class="highlight xml"><code><span class="nt">&lt;PartnerRequest</span>
-<span class="na">signature=</span><span class="s">”2385432dff1286f507acaec2485b14cdef92e669da759b2f30824eb</span>
+<span class="na">signature=</span><span class="s">"2385432dff1286f507acaec2485b14cdef92e669da759b2f30824eb</span>
 <span class="err">844a6d6ad11d36968ce62d99556dda62449495189b5d688cc8d2c820288b34d8a7</span>
-<span class="err">01af783”</span> <span class="na">id=</span><span class="s">”1”</span> <span class="na">sso_partner_id=</span><span class="s">”abc123”</span><span class="nt">&gt;</span>
+<span class="err">01af783"</span> <span class="na">id=</span><span class="s">"1"</span> <span class="na">sso_partner_id=</span><span class="s">"abc123"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;AccountList&gt;</span>
     <span class="nt">&lt;Accounts&gt;</span>
       <span class="nt">&lt;Account&gt;</span>
