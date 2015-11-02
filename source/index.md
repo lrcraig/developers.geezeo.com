@@ -31,6 +31,7 @@ includes:
   - tickets
   - transactions
   - users
+  - sdk-python
   - push-data-source
   - data-source
 
