@@ -43,6 +43,22 @@ sdk.getMeAListOfFIs()
 
 ```
 
+> Return structure
+'''json
+
+[
+  {
+    "name":"a bank",
+    "url":"probably",
+    "phone":"naw",
+    "login_credentials" : [
+      "name" : "something"
+    ]
+  }
+]
+
+'''
+
 Here's a list of FI's for your database.
 
 ## Header for each operation
