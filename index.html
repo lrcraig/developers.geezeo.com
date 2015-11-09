@@ -3346,7 +3346,7 @@ values are what the fields should be labeled as when presented to the user.</p>
 <blockquote>
 <p>Request payload</p>
 </blockquote>
-<pre class="highlight plaintext"><code>accounts[657][type_code]=SDA,SDA&amp;accounts[657][details]=My+Checking&amp;accounts[658][type_code]=ignore
+<pre class="highlight plaintext"><code>accounts[657][type_code]=SDA,SDA&amp;accounts[658][type_code]=ignore
 </code></pre>
 
 <blockquote>
@@ -3398,10 +3398,6 @@ providing the <code class="prettyprint">details</code> parameter.</p>
 <tr>
 <td><code class="prettyprint">accounts[657]</code></td>
 <td>The integer portion of this key is the <code class="prettyprint">id</code> value from the account details in the previous <code class="prettyprint">POST /api/v2/users/pcid/ce_fis</code> request.</td>
-</tr>
-<tr>
-<td><code class="prettyprint">accounts[657][details]</code></td>
-<td>The given string will be used as the name for this account in PFM instead of the one supplied by the aggregator.</td>
 </tr>
 <tr>
 <td><code class="prettyprint">accounts[657][type_code]</code></td>
