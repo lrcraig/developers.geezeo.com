@@ -32,6 +32,7 @@ includes:
   - transactions
   - users
   - sdk-python
+  - sdk-python-types
   - push-data-source
   - data-source
 

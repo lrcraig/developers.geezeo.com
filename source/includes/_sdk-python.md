@@ -1,6 +1,4 @@
-# DRAFT Python Aggregation SDK DRAFT
-
-We have a python sdk. It's awesome and we'll write about it more here.
+# DRAFT Python Aggregation SDK operations DRAFT
 
 ## Installing the library
 
@@ -16,57 +14,54 @@ We have a python sdk. It's awesome and we'll write about it more here.
 
 We have packaged our library nicely. It plays well with others.
 
-## Creating an instance
+## Using the library
 
-> Factory? Init? SomethingElsE?
+> These items will be provided during implementation
 
 ```python
-import sdk from Geezeo
+import geezeo
 
-sdk.makeItGo('https://my.geezeo.url', 'my-api-key', 'users-pcid');
+sdk = geezeo.sdk(api_key, user_id, url)
+```
+
+Python SDK for the Geezeo API.
+
+The use of this package starts with an SDK instance, which is created with the authentication information required by Geezeo’s web API.
+
+The constructor can raise an [UnauthorizedError](#unauthorizederror) if api_key is incorrect, or a [DoesNotExistError](#doesnotexisterror) if the user_id doesn’t correspond to an actual user.
+
+| Argument | Description |
+| -------- | ----------- |
+| api_key  | Authentication key for the partner institution using this SDK. If api_key is invalid, the constructor will raise an UnauthorizedError. |
+| user     | User on whose behalf the SDK is being used. Note that the SDK object is constructed with the string user_id, and this attribute will be populated with the corresponding User during construction.|
+| url      | URL for the partner institution’s web site. |
+
+
+Once you have an instance the SDK has methods to handle all of the operations of aggregation.
+
+
+## get_featured_institutions
+
+
+```python
+
+sdk.get_featured_institutions()
 
 ```
 
-Each instance of the SDK is scoped to a single user I think. Our others work this way.
+> Returns list of [FinancialInstitution](#python-financialinstitution) objects.
 
+Partners can maintain a list of featured institutions. This method will return that list in the specified order. 
 
-## Get a list of Financial Institutions
+Contact support to change the list of featured institutions for a partner.
+ 
 
-> Get a list
+## get_all_institutions
 
-```python
-import sdk from Geezeo
+## search_institutions
 
-sdk.makeItGo('https://my.geezeo.url', 'my-api-key', 'users-pcid');
+## get_institution
 
-sdk.getMeAListOfFIs()
+## authenticate
 
-```
-
-> Return structure
-'''json
-
-[
-  {
-    "name":"a bank",
-    "url":"probably",
-    "phone":"naw",
-    "login_credentials" : [
-      "name" : "something"
-    ]
-  }
-]
-
-'''
-
-Here's a list of FI's for your database.
-
-## Header for each operation
-
-> This goes above a code block to explain it breifly
-
-```python
-from github import markdown
-```
-
-The text for a block always goes beneath the code and > block. It's kind of annoying. 
+## change_authentication
