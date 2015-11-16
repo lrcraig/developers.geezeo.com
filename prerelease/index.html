@@ -9511,6 +9511,331 @@ one is already in progress.</p>
 </tr>
 </tbody></table>
 
+          <h1 id="draft-python-aggregation-sdk-operations-draft">DRAFT Python Aggregation SDK operations DRAFT</h1>
+
+<h2 id="installing-the-library">Installing the library</h2>
+
+<blockquote>
+<p>Install from {?}</p>
+</blockquote>
+<pre class="highlight shell"><code></code></pre>
+
+<blockquote>
+<p>Install from {maybe source/git?}</p>
+</blockquote>
+<pre class="highlight shell"><code></code></pre>
+
+<p>We have packaged our library nicely. It plays well with others.</p>
+
+<h2 id="using-the-library">Using the library</h2>
+
+<blockquote>
+<p>These items will be provided during implementation</p>
+</blockquote>
+<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">geezeo</span>
+
+<span class="n">sdk</span> <span class="o">=</span> <span class="n">geezeo</span><span class="o">.</span><span class="n">sdk</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+</code></pre>
+
+<p>Python SDK for the Geezeo API.</p>
+
+<p>The use of this package starts with an SDK instance, which is created with the authentication information required by Geezeo’s web API.</p>
+
+<p>The constructor can raise an <a href="#unauthorizederror">UnauthorizedError</a> if api_key is incorrect, or a <a href="#doesnotexisterror">DoesNotExistError</a> if the user_id doesn’t correspond to an actual user.</p>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>api_key</td>
+<td>Authentication key for the partner institution using this SDK. If api_key is invalid, the constructor will raise an UnauthorizedError.</td>
+</tr>
+<tr>
+<td>user</td>
+<td>User on whose behalf the SDK is being used. Note that the SDK object is constructed with the string user_id, and this attribute will be populated with the corresponding User during construction.</td>
+</tr>
+<tr>
+<td>url</td>
+<td>URL for the partner institution’s web site.</td>
+</tr>
+</tbody></table>
+
+<p>Once you have an instance the SDK has methods to handle all of the operations of aggregation.</p>
+
+<h2 id="get_featured_institutions">get_featured_institutions</h2>
+<pre class="highlight python"><code>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_featured_institutions</span><span class="p">()</span>
+
+</code></pre>
+
+<blockquote>
+<p>Returns list of <a href="#authprompt">AuthPrompt</a> objects.</p>
+</blockquote>
+
+<p>Partners can maintain a list of featured institutions. This method will return that list in the specified order. </p>
+
+<p>Contact support to change the list of featured institutions for a partner.</p>
+
+<h2 id="get_all_institutions">get_all_institutions</h2>
+<pre class="highlight python"><code>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_all_institutions</span><span class="p">(</span><span class="n">get_all_pages</span><span class="o">=</span><span class="n">false</span><span class="p">,</span> <span class="n">page_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+</code></pre>
+
+<blockquote>
+<p>Returns list of <a href="#authprompt">AuthPrompt</a> objects.</p>
+</blockquote>
+
+<p>Partners can request a list institutions supported by the Geezeo aggregation platform. </p>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>get_all_pages</td>
+<td>The SDK will aggregate all pages into one. WARNING this call will take a LONG time.</td>
+</tr>
+<tr>
+<td>page_number</td>
+<td>A specific page to retrieve.</td>
+</tr>
+</tbody></table>
+
+<h2 id="search_institutions">search_institutions</h2>
+<pre class="highlight python"><code>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_all_institutions</span><span class="p">(</span><span class="n">search_string</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+</code></pre>
+
+<blockquote>
+<p>Returns list of <a href="#authprompt">AuthPrompt</a> objects.</p>
+</blockquote>
+
+<p>Partners can search for an Institutions based on name, url, or both. </p>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>search_string</td>
+<td>The search term to search for.</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>An optional argument to limit the search to the name or url. Accepted values are [&lsquo;name&rsquo;, &#39;url&rsquo;]</td>
+</tr>
+</tbody></table>
+
+<h2 id="get_institution">get_institution</h2>
+<pre class="highlight python"><code>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_institution</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+</code></pre>
+
+<blockquote>
+<p>Returns an <a href="#authprompt">AuthPrompt</a> object.</p>
+</blockquote>
+
+<p>Partners can load the AuthPrompt for a specific institution. </p>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>The id of the institution</td>
+</tr>
+</tbody></table>
+
+<h2 id="authenticate">authenticate</h2>
+<pre class="highlight python"><code>
+<span class="n">sdk</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">submit_key</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+</code></pre>
+
+<blockquote>
+<p>Raises an <a href="#mfarequirederror">MFARequiredError</a> if MFA is required.
+Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p>
+</blockquote>
+
+<p>To execute a specific AuthPrompt request, submit it&rsquo;s submit_key with the list of parameters that were provided. </p>
+
+<p>All parameters should now have a populated value field.</p>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>submit_key</td>
+<td>An <a href="#authprompt">AuthPrompt</a> has a submit_key that is used to submit authentication requests.</td>
+</tr>
+<tr>
+<td>parameters</td>
+<td>An <a href="#authprompt">AuthPrompt</a> has an array of parameters that should be displayed to the user. The users input should be included in the .value property.</td>
+</tr>
+</tbody></table>
+
+<h2 id="change_authentication">change_authentication</h2>
+
+          <h1 id="draft-python-aggregation-sdk-types-draft">DRAFT Python Aggregation SDK Types DRAFT</h1>
+
+<h2 id="unauthorizederror">UnauthorizedError</h2>
+
+<h2 id="doesnotexisterror">DoesNotExistError</h2>
+
+<h2 id="networkerror">NetworkError</h2>
+
+<h2 id="mfarequirederror">MFARequiredError</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>AuthPrompt</td>
+<td>An additional <a href="#authprompt">AuthPrompt</a> for the user to complete. There may be multiple is succession.</td>
+</tr>
+</tbody></table>
+
+<h2 id="authprompt">AuthPrompt</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Identifier for this financial institution.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Name of this financial institution.</td>
+</tr>
+<tr>
+<td>url</td>
+<td>url of this financial institution.</td>
+</tr>
+<tr>
+<td>login_parameters</td>
+<td>A list of <a href="#python-authparameter">AuthParameter</a> objects for authentication.</td>
+</tr>
+<tr>
+<td>submit_key</td>
+<td>The key for this auth prompt. This key should be used when submitting this AuthPrompt for authentication.</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>to_json</td>
+<td>Create a json representation.</td>
+</tr>
+</tbody></table>
+
+<h2 id="aggregatedinstitution">AggregatedInstitution</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Identifier for this financial institution.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Name of this financial institution.</td>
+</tr>
+<tr>
+<td>url</td>
+<td>url of this financial institution.</td>
+</tr>
+<tr>
+<td>accounts</td>
+<td>An array of accounts for this institution.</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>to_json</td>
+<td>Create a json representation.</td>
+</tr>
+</tbody></table>
+
+<h2 id="authparameter">AuthParameter</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>key</td>
+<td>String that identifies this parameter uniquely among the parameters for the parent prompt.</td>
+</tr>
+<tr>
+<td>caption</td>
+<td>String challenge for the user, e.g. &ldquo;What is your favorite color?&rdquo;.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String description of the information to be provided, e.g. &ldquo;password&rdquo;.</td>
+</tr>
+<tr>
+<td>max_length</td>
+<td>Maximum length that the answer for the parameter can have (int).</td>
+</tr>
+<tr>
+<td>value</td>
+<td>The value parameter should be provided by the end user. It will default to <em>None</em>.</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>to_json</td>
+<td>Create a json representation.</td>
+</tr>
+</tbody></table>
+
           <h1 id="draft-push-data-source-draft">DRAFT Push Data Source DRAFT</h1>
 
 <blockquote>
