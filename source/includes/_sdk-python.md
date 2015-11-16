@@ -49,7 +49,7 @@ sdk.get_featured_institutions()
 
 ```
 
-> Returns list of [FinancialInstitution](#python-financialinstitution) objects.
+> Returns list of [AuthPrompt](#authprompt) objects.
 
 Partners can maintain a list of featured institutions. This method will return that list in the specified order. 
 
@@ -58,10 +58,77 @@ Contact support to change the list of featured institutions for a partner.
 
 ## get_all_institutions
 
+```python
+
+sdk.get_all_institutions(get_all_pages=false, page_number=1)
+
+```
+
+> Returns list of [AuthPrompt](#authprompt) objects.
+
+Partners can request a list institutions supported by the Geezeo aggregation platform. 
+
+| Argument | Description |
+| -------- | ----------- |
+| get_all_pages | The SDK will aggregate all pages into one. WARNING this call will take a LONG time. |
+| page_number | A specific page to retrieve.|
+
+
+
 ## search_institutions
+
+```python
+
+sdk.get_all_institutions(search_string, scope=None)
+
+```
+
+> Returns list of [AuthPrompt](#authprompt) objects.
+
+Partners can search for an Institutions based on name, url, or both. 
+
+| Argument | Description |
+| -------- | ----------- |
+| search_string | The search term to search for. |
+| scope | An optional argument to limit the search to the name or url. Accepted values are ['name', 'url']|
+
 
 ## get_institution
 
+```python
+
+sdk.get_institution(id)
+
+```
+
+> Returns an [AuthPrompt](#authprompt) object.
+
+Partners can load the AuthPrompt for a specific institution. 
+
+| Argument | Description |
+| -------- | ----------- |
+| id | The id of the institution |
+
 ## authenticate
+
+```python
+
+sdk.authenticate(submit_key, parameters)
+
+```
+
+> Raises an [MFARequiredError](#mfarequirederror) if MFA is required.
+> Returns an [AggregatedInstitution](#aggregatedinstitution) object.
+
+
+To execute a specific AuthPrompt request, submit it's submit_key with the list of parameters that were provided. 
+
+All parameters should now have a populated value field.
+
+| Argument | Description |
+| -------- | ----------- |
+| submit_key | An [AuthPrompt](#authprompt) has a submit_key that is used to submit authentication requests.|
+| parameters | An [AuthPrompt](#authprompt) has an array of parameters that should be displayed to the user. The users input should be included in the .value property. |
+
 
 ## change_authentication
