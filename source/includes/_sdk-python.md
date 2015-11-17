@@ -45,33 +45,36 @@ Once you have an instance the SDK has methods to handle all of the operations of
 
 ```python
 
-sdk.get_featured_institutions()
+sdk.get_featured_institutions(page=None)
 
 ```
 
-> Returns list of [AuthPrompt](#authprompt) objects.
+> Returns list-like object of [AuthPrompt](#authprompt) objects. This object also has current_page and last_page attributes, which allow you to manage pagination.
 
-Partners can maintain a list of featured institutions. This method will return that list in the specified order. 
+Partners can maintain a list of featured institutions. This method will return that list in the specified order.
 
 Contact support to change the list of featured institutions for a partner.
- 
+
+| Argument | Description |
+| -------- | ----------- |
+| page | A specific page to retrieve (defaults to the first page). |
 
 ## get_all_institutions
 
 ```python
 
-sdk.get_all_institutions(get_all_pages=false, page_number=1)
+sdk.get_all_institutions(get_all_pages=false, page=1)
 
 ```
 
-> Returns list of [AuthPrompt](#authprompt) objects.
+> Returns list-like object of [AuthPrompt](#authprompt) objects. This object also has current_page and last_page attributes, which allow you to manage pagination.
 
-Partners can request a list institutions supported by the Geezeo aggregation platform. 
+Partners can request a list institutions supported by the Geezeo aggregation platform.
 
 | Argument | Description |
 | -------- | ----------- |
 | get_all_pages | The SDK will aggregate all pages into one. WARNING this call will take a LONG time. |
-| page_number | A specific page to retrieve.|
+| page | A specific page to retrieve.|
 
 
 
@@ -79,18 +82,19 @@ Partners can request a list institutions supported by the Geezeo aggregation pla
 
 ```python
 
-sdk.get_all_institutions(search_string, scope=None)
+sdk.get_all_institutions(search_string, scope=None, page=None)
 
 ```
 
-> Returns list of [AuthPrompt](#authprompt) objects.
+> Returns list-like object of [AuthPrompt](#authprompt) objects. This object also has current_page and last_page attributes, which allow you to manage pagination.
 
-Partners can search for an Institutions based on name, url, or both. 
+Partners can search for an Institutions based on name, url, or both.
 
 | Argument | Description |
 | -------- | ----------- |
 | search_string | The search term to search for. |
 | scope | An optional argument to limit the search to the name or url. Accepted values are ['name', 'url']|
+| page | Optional page number, since the results are paginated. Defaults to the first page. |
 
 
 ## get_institution
@@ -103,7 +107,7 @@ sdk.get_institution(id)
 
 > Returns an [AuthPrompt](#authprompt) object.
 
-Partners can load the AuthPrompt for a specific institution. 
+Partners can load the AuthPrompt for a specific institution.
 
 | Argument | Description |
 | -------- | ----------- |
@@ -121,7 +125,7 @@ sdk.authenticate(submit_key, parameters)
 > Returns an [AggregatedInstitution](#aggregatedinstitution) object.
 
 
-To execute a specific AuthPrompt request, submit it's submit_key with the list of parameters that were provided. 
+To execute a specific AuthPrompt request, submit it's submit_key with the list of parameters that were provided.
 
 All parameters should now have a populated value field.
 
