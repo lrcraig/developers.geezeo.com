@@ -132,7 +132,7 @@ All parameters should now have a populated value field.
 | Argument | Description |
 | -------- | ----------- |
 | submit_key | An [AuthPrompt](#authprompt) has a submit_key that is used to submit authentication requests.|
-| parameters | An [AuthPrompt](#authprompt) has an array of parameters that should be displayed to the user. The users input should be included in the .value property. |
+| parameters | An [AuthPrompt](#authprompt) has an array of parameters that should be displayed to the user. This argument needs to be a dictionary with a key for the key attribute of each of those parameter objects. |
 
 
 ## change_authentication
