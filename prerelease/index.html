@@ -9534,7 +9534,7 @@ one is already in progress.</p>
 </blockquote>
 <pre class="highlight python"><code><span class="kn">import</span> <span class="nn">geezeo</span>
 
-<span class="n">sdk</span> <span class="o">=</span> <span class="n">geezeo</span><span class="o">.</span><span class="n">sdk</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<span class="n">sdk</span> <span class="o">=</span> <span class="n">geezeo</span><span class="o">.</span><span class="n">SDK</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
 </code></pre>
 
 <p>Python SDK for the Geezeo API.</p>
@@ -9554,8 +9554,8 @@ one is already in progress.</p>
 <td>Authentication key for the partner institution using this SDK. If api_key is invalid, the constructor will raise an UnauthorizedError.</td>
 </tr>
 <tr>
-<td>user</td>
-<td>User on whose behalf the SDK is being used. Note that the SDK object is constructed with the string user_id, and this attribute will be populated with the corresponding User during construction.</td>
+<td>user_id</td>
+<td>Shared identifier for the scoped user.</td>
 </tr>
 <tr>
 <td>url</td>
@@ -9567,29 +9567,41 @@ one is already in progress.</p>
 
 <h2 id="get_featured_institutions">get_featured_institutions</h2>
 <pre class="highlight python"><code>
-<span class="n">sdk</span><span class="o">.</span><span class="n">get_featured_institutions</span><span class="p">()</span>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_featured_institutions</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 
 </code></pre>
 
 <blockquote>
-<p>Returns list of <a href="#authprompt">AuthPrompt</a> objects.</p>
+<p>Returns a <a href="#searchresult">SearchResult</a></p>
 </blockquote>
 
-<p>Partners can maintain a list of featured institutions. This method will return that list in the specified order. </p>
+<p>Partners can maintain a list of featured institutions. This method will return that list in the specified order.</p>
 
 <p>Contact support to change the list of featured institutions for a partner.</p>
 
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>A specific page to retrieve (defaults to the first page).</td>
+</tr>
+</tbody></table>
+
 <h2 id="get_all_institutions">get_all_institutions</h2>
 <pre class="highlight python"><code>
-<span class="n">sdk</span><span class="o">.</span><span class="n">get_all_institutions</span><span class="p">(</span><span class="n">get_all_pages</span><span class="o">=</span><span class="n">false</span><span class="p">,</span> <span class="n">page_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_all_institutions</span><span class="p">(</span><span class="n">get_all_pages</span><span class="o">=</span><span class="n">false</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 </code></pre>
 
 <blockquote>
-<p>Returns list of <a href="#authprompt">AuthPrompt</a> objects.</p>
+<p>Returns a <a href="#searchresult">SearchResult</a></p>
 </blockquote>
 
-<p>Partners can request a list institutions supported by the Geezeo aggregation platform. </p>
+<p>Partners can request a list institutions supported by the Geezeo aggregation platform.</p>
 
 <table><thead>
 <tr>
@@ -9602,22 +9614,22 @@ one is already in progress.</p>
 <td>The SDK will aggregate all pages into one. WARNING this call will take a LONG time.</td>
 </tr>
 <tr>
-<td>page_number</td>
+<td>page</td>
 <td>A specific page to retrieve.</td>
 </tr>
 </tbody></table>
 
 <h2 id="search_institutions">search_institutions</h2>
 <pre class="highlight python"><code>
-<span class="n">sdk</span><span class="o">.</span><span class="n">get_all_institutions</span><span class="p">(</span><span class="n">search_string</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_all_institutions</span><span class="p">(</span><span class="n">search_string</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 
 </code></pre>
 
 <blockquote>
-<p>Returns list of <a href="#authprompt">AuthPrompt</a> objects.</p>
+<p>Returns a <a href="#searchresult">SearchResult</a></p>
 </blockquote>
 
-<p>Partners can search for an Institutions based on name, url, or both. </p>
+<p>Partners can search for an Institutions based on name, url, or both.</p>
 
 <table><thead>
 <tr>
@@ -9633,6 +9645,10 @@ one is already in progress.</p>
 <td>scope</td>
 <td>An optional argument to limit the search to the name or url. Accepted values are [&lsquo;name&rsquo;, &#39;url&rsquo;]</td>
 </tr>
+<tr>
+<td>page</td>
+<td>Optional page number, since the results are paginated. Defaults to the first page.</td>
+</tr>
 </tbody></table>
 
 <h2 id="get_institution">get_institution</h2>
@@ -9645,7 +9661,7 @@ one is already in progress.</p>
 <p>Returns an <a href="#authprompt">AuthPrompt</a> object.</p>
 </blockquote>
 
-<p>Partners can load the AuthPrompt for a specific institution. </p>
+<p>Partners can load the AuthPrompt for a specific institution.</p>
 
 <table><thead>
 <tr>
@@ -9670,7 +9686,7 @@ one is already in progress.</p>
 Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p>
 </blockquote>
 
-<p>To execute a specific AuthPrompt request, submit it&rsquo;s submit_key with the list of parameters that were provided. </p>
+<p>To execute a specific AuthPrompt request, submit it&rsquo;s submit_key with the list of parameters that were provided.</p>
 
 <p>All parameters should now have a populated value field.</p>
 
@@ -9686,7 +9702,7 @@ Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p
 </tr>
 <tr>
 <td>parameters</td>
-<td>An <a href="#authprompt">AuthPrompt</a> has an array of parameters that should be displayed to the user. The users input should be included in the .value property.</td>
+<td>An <a href="#authprompt">AuthPrompt</a> has an array of parameters that should be displayed to the user. This argument needs to be a dictionary with a key for the key attribute of each of those parameter objects.</td>
 </tr>
 </tbody></table>
 
@@ -9833,6 +9849,28 @@ Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p
 <tr>
 <td>to_json</td>
 <td>Create a json representation.</td>
+</tr>
+</tbody></table>
+
+<h2 id="searchresult">SearchResult</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>auth_prompts</td>
+<td>A list of auth_prompts that match the criteria.</td>
+</tr>
+<tr>
+<td>current_page</td>
+<td>Current page of the results.</td>
+</tr>
+<tr>
+<td>total_pages</td>
+<td>Total number of pages that match the criteria.</td>
 </tr>
 </tbody></table>
 
