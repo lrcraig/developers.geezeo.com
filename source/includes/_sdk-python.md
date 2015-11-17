@@ -21,7 +21,7 @@ We have packaged our library nicely. It plays well with others.
 ```python
 import geezeo
 
-sdk = geezeo.sdk(api_key, user_id, url)
+sdk = geezeo.SDK(api_key, user_id, url)
 ```
 
 Python SDK for the Geezeo API.
