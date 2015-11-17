@@ -9537,11 +9537,17 @@ one is already in progress.</p>
 <span class="n">sdk</span> <span class="o">=</span> <span class="n">geezeo</span><span class="o">.</span><span class="n">SDK</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
 </code></pre>
 
+<blockquote>
+<p>Raises an <a href="#unauthorizederror">UnauthorizedError</a> if api_key is incorrect.</p>
+
+<p>Raises a <a href="#doesnotexisterror">DoesNotExistError</a> if the user_id doesn’t correspond to an actual user.</p>
+
+<p>Returns an SDK instance. </p>
+</blockquote>
+
 <p>Python SDK for the Geezeo API.</p>
 
 <p>The use of this package starts with an SDK instance, which is created with the authentication information required by Geezeo’s web API.</p>
-
-<p>The constructor can raise an <a href="#unauthorizederror">UnauthorizedError</a> if api_key is incorrect, or a <a href="#doesnotexisterror">DoesNotExistError</a> if the user_id doesn’t correspond to an actual user.</p>
 
 <table><thead>
 <tr>
@@ -9682,8 +9688,9 @@ one is already in progress.</p>
 </code></pre>
 
 <blockquote>
-<p>Raises an <a href="#mfarequirederror">MFARequiredError</a> if MFA is required.
-Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p>
+<p>Raises a <a href="#mfarequirederror">MFARequiredError</a> if MFA is required.</p>
+
+<p>Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p>
 </blockquote>
 
 <p>To execute a specific AuthPrompt request, submit it&rsquo;s submit_key with the list of parameters that were provided.</p>
@@ -9707,6 +9714,38 @@ Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p
 </tbody></table>
 
 <h2 id="change_authentication">change_authentication</h2>
+<pre class="highlight python"><code>
+<span class="n">sdk</span><span class="o">.</span><span class="n">change_authentication</span><span class="p">(</span><span class="n">account_id</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+</code></pre>
+
+<blockquote>
+<p>Raises a <a href="#doesnotexisterror">DoesNotExistError</a> if account is not found.</p>
+
+<p>Raises a <a href="#mfarequirederror">MFARequiredError</a> if MFA is required.</p>
+
+<p>Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p>
+</blockquote>
+
+<p>To change a user&rsquo;s credentials a partner must first get an <a href="#authprompt">AuthPrompt</a>. <a href="#accounts">Accounts</a> expose fi.id. This id can be used to get an <a href="#authprompt">AuthPrompt</a> from <a href="#get_institution">get_institution</a>. </p>
+
+<p>Use the login_parameters normally, but instead of using a submit_key use the account.id from the account.</p>
+
+<table><thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>account_id</td>
+<td>The id of the account that will be updated.</td>
+</tr>
+<tr>
+<td>parameters</td>
+<td>The login_parameters from an <a href="#authprompt">AuthPrompt</a></td>
+</tr>
+</tbody></table>
 
           <h1 id="draft-python-aggregation-sdk-types-draft">DRAFT Python Aggregation SDK Types DRAFT</h1>
 
@@ -9752,7 +9791,7 @@ Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p
 </tr>
 <tr>
 <td>login_parameters</td>
-<td>A list of <a href="#python-authparameter">AuthParameter</a> objects for authentication.</td>
+<td>A list of <a href="#authparameter">AuthParameter</a> objects for authentication.</td>
 </tr>
 <tr>
 <td>submit_key</td>
