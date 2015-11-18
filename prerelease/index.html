@@ -9516,16 +9516,12 @@ one is already in progress.</p>
 <h2 id="installing-the-library">Installing the library</h2>
 
 <blockquote>
-<p>Install from {?}</p>
+<p>Install from pip</p>
 </blockquote>
-<pre class="highlight shell"><code></code></pre>
+<pre class="highlight python"><code><span class="n">pip</span> <span class="n">install</span> <span class="n">geezeo</span>
+</code></pre>
 
-<blockquote>
-<p>Install from {maybe source/git?}</p>
-</blockquote>
-<pre class="highlight shell"><code></code></pre>
-
-<p>We have packaged our library nicely. It plays well with others.</p>
+<p>The Geezeo SDK is available via pip. </p>
 
 <h2 id="using-the-library">Using the library</h2>
 
@@ -9573,29 +9569,17 @@ one is already in progress.</p>
 
 <h2 id="get_featured_institutions">get_featured_institutions</h2>
 <pre class="highlight python"><code>
-<span class="n">sdk</span><span class="o">.</span><span class="n">get_featured_institutions</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">sdk</span><span class="o">.</span><span class="n">get_featured_institutions</span><span class="p">()</span>
 
 </code></pre>
 
 <blockquote>
-<p>Returns a <a href="#searchresult">SearchResult</a></p>
+<p>Returns a list of <a href="#authprompt">AuthPrompt</a> objects.</p>
 </blockquote>
 
 <p>Partners can maintain a list of featured institutions. This method will return that list in the specified order.</p>
 
 <p>Contact support to change the list of featured institutions for a partner.</p>
-
-<table><thead>
-<tr>
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>page</td>
-<td>A specific page to retrieve (defaults to the first page).</td>
-</tr>
-</tbody></table>
 
 <h2 id="get_all_institutions">get_all_institutions</h2>
 <pre class="highlight python"><code>
@@ -9604,7 +9588,7 @@ one is already in progress.</p>
 </code></pre>
 
 <blockquote>
-<p>Returns a <a href="#searchresult">SearchResult</a></p>
+<p>Returns a <a href="#pagedresults">PagedResults</a> object.</p>
 </blockquote>
 
 <p>Partners can request a list institutions supported by the Geezeo aggregation platform.</p>
@@ -9632,7 +9616,7 @@ one is already in progress.</p>
 </code></pre>
 
 <blockquote>
-<p>Returns a <a href="#searchresult">SearchResult</a></p>
+<p>Returns a <a href="#pagedresults">PagedResults</a> object.</p>
 </blockquote>
 
 <p>Partners can search for an Institutions based on name, url, or both.</p>
@@ -9748,26 +9732,6 @@ one is already in progress.</p>
 </tbody></table>
 
           <h1 id="draft-python-aggregation-sdk-types-draft">DRAFT Python Aggregation SDK Types DRAFT</h1>
-
-<h2 id="unauthorizederror">UnauthorizedError</h2>
-
-<h2 id="doesnotexisterror">DoesNotExistError</h2>
-
-<h2 id="networkerror">NetworkError</h2>
-
-<h2 id="mfarequirederror">MFARequiredError</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>AuthPrompt</td>
-<td>An additional <a href="#authprompt">AuthPrompt</a> for the user to complete. There may be multiple is succession.</td>
-</tr>
-</tbody></table>
 
 <h2 id="authprompt">AuthPrompt</h2>
 
@@ -9891,7 +9855,7 @@ one is already in progress.</p>
 </tr>
 </tbody></table>
 
-<h2 id="searchresult">SearchResult</h2>
+<h2 id="pagedresults">PagedResults</h2>
 
 <table><thead>
 <tr>
@@ -9912,6 +9876,26 @@ one is already in progress.</p>
 <td>Total number of pages that match the criteria.</td>
 </tr>
 </tbody></table>
+
+<h2 id="mfarequirederror">MFARequiredError</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>AuthPrompt</td>
+<td>An additional <a href="#authprompt">AuthPrompt</a> for the user to complete. There may be multiple is succession.</td>
+</tr>
+</tbody></table>
+
+<h2 id="unauthorizederror">UnauthorizedError</h2>
+
+<h2 id="doesnotexisterror">DoesNotExistError</h2>
+
+<h2 id="networkerror">NetworkError</h2>
 
           <h1 id="draft-push-data-source-draft">DRAFT Push Data Source DRAFT</h1>
 
@@ -10399,7 +10383,7 @@ one is already in progress.</p>
 </tr>
 </tbody></table>
 
-<h3 id="a-name-properties-properties-container"><a name="Properties"></a> Properties Container</h3>
+<h3 id="properties-container"><a name="Properties"></a> Properties Container</h3>
 
 <p>The properties container is used to define non-balance based information and statistics. For example, in the future, items such as reward points, airline miles, and special promotion information would be provided through the properties container.</p>
 
@@ -10431,7 +10415,7 @@ one is already in progress.</p>
 </tr>
 </tbody></table>
 
-<h3 id="a-name-propertytype-property-types"><a name="PropertyType"></a> Property Types</h3>
+<h3 id="property-types"><a name="PropertyType"></a> Property Types</h3>
 
 <table><thead>
 <tr>
@@ -10779,7 +10763,7 @@ Once a signature has been generated, place it in the “signature&quot; attribut
 
 <h2 id="general-reused-types">General reused types</h2>
 
-<h3 id="a-name-accounttype-account-types"><a name="AccountType"></a> Account Types</h3>
+<h3 id="account-types"><a name="AccountType"></a> Account Types</h3>
 
 <table><thead>
 <tr>
@@ -10821,7 +10805,7 @@ Once a signature has been generated, place it in the “signature&quot; attribut
 </tr>
 </tbody></table>
 
-<h3 id="a-name-actiontype-action-types"><a name="ActionType"></a> Action Types</h3>
+<h3 id="action-types"><a name="ActionType"></a> Action Types</h3>
 
 <table><thead>
 <tr>
