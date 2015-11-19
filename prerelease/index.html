@@ -9699,7 +9699,7 @@ one is already in progress.</p>
 
 <h2 id="change_authentication">change_authentication</h2>
 <pre class="highlight python"><code>
-<span class="n">sdk</span><span class="o">.</span><span class="n">change_authentication</span><span class="p">(</span><span class="n">account_id</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="n">sdk</span><span class="o">.</span><span class="n">change_authentication</span><span class="p">(</span><span class="n">submit_key</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
 
 </code></pre>
 
@@ -9711,9 +9711,7 @@ one is already in progress.</p>
 <p>Returns an <a href="#aggregatedinstitution">AggregatedInstitution</a> object.</p>
 </blockquote>
 
-<p>To change a user&rsquo;s credentials a partner must first get an <a href="#authprompt">AuthPrompt</a>. <a href="#accounts">Accounts</a> expose fi.id. This id can be used to get an <a href="#authprompt">AuthPrompt</a> from <a href="#get_institution">get_institution</a>. </p>
-
-<p>Use the login_parameters normally, but instead of using a submit_key use the account.id from the account.</p>
+<p>To change a user&rsquo;s credentials a partner must first get an <a href="#authprompt">AuthPrompt</a> and submit_key. <a href="#accounts">Accounts</a> expose fi.id. This id can be used to get an <a href="#authprompt">AuthPrompt</a> from <a href="#get_institution">get_institution</a>. </p>
 
 <table><thead>
 <tr>
